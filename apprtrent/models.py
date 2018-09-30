@@ -11,7 +11,7 @@ class Owner(models.Model):
     address_code = models.CharField(max_length=6, help_text="00-000", verbose_name="kod")
     address_str = models.CharField(max_length=128, verbose_name="Ulica i nr")
     address_no = models.CharField(max_length=16, null=True, verbose_name="nr lokalu")
-    tel_no = models.CharField(max_lenght=32, null=True, verbose_name="Nr telefonu")
+    tel_no = models.CharField(max_length=32, null=True, verbose_name="Nr telefonu")
     e_mail = models.EmailField(null=True, verbose_name="Email")
     comment = models.TextField(null=True, blank=True, verbose_name="Dodatkowe informacje")
 
