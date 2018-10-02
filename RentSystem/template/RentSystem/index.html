@@ -1,0 +1,16 @@
+{% extends "RentSystem/base.html" %}
+
+{% block content %}
+
+<div class="select2-container">
+    <p></p>
+<h3> Nasze apartamenty</h3>
+    {% for app in appartments %}
+        <img width="300px" src="{{ app.path.url }}"/> {{ app.name }}<br> od: {{ app.price }}
+    <p></p>
+    {% endfor %}
+</div>
+
+</div>
+{% endblock %}
+

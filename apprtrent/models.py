@@ -1,11 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+
+class User(AbstractUser):
+    class Meta:
+        verbose_name = 'użytkownik'
+        verbose_name_plural = 'użytkownicy'
+        ordering = ['username']
 
 
 class Owner(models.Model):
-    first_name = models.CharField(max_length=30, verbose_name="Imię")
-    last_name = models.CharField(max_length=64, verbose_name="Nazwisko")
-    company_name = models.CharField(max_length=128, null=True, verbose_name="Nazwa firmy")
-    if_vat = models.BooleanField(default=True, verbose_name="Czy płatnik VAT")
+    first_name = models.CharField(max_length=30, verbose_name="Imię", null=True)
+    last_name = models.CharField(max_length=64, verbose_name="Nazwisko", null=True)
+    company_name = models.CharField(max_length=128, verbose_name="Nazwa firmy", null=True)
+    if_vat = models.BooleanField(default=True, verbose_name="płatnik VAT", help_text='Czy jest płatnikiem VAT')
     vat_number = models.CharField(max_length=10, null=True, verbose_name="NIP")
     address_city = models.CharField(max_length=128, verbose_name="Miasto")
     address_code = models.CharField(max_length=6, help_text="00-000", verbose_name="kod")
@@ -22,12 +30,6 @@ class Owner(models.Model):
     def __str__(self):
         return self.first_name + self.last_name + self.company_name
 
-CITY_CHOICES = (
-    (1, "Warszawa"),
-    (2, "Kraków"),
-    (3, "Poznań"),
-    (4, "Wrocław"),
-)
 
 APP_FACILITIES = (
     (1, "wifi"),
@@ -62,11 +64,14 @@ class Fee(models.Model):
     name = models.CharField(max_length=64, verbose_name="dodatkowa opłata")
     fee_value = models.DecimalField(max_digits=6, decimal_places=2)
 
+class City(models.Model):
+    city_name = models.CharField(max_length=60, verbose_name="miasto")
+
 
 class Appartment(models.Model):
     app_name = models.CharField(max_length=128, verbose_name="Nazwa apartamentu")
     description = models.TextField(verbose_name="Opis apartamentu")
-    address_city = models.SmallIntegerField(choices=CITY_CHOICES)
+    address_city = models.ForeignKey(City, on_delete=models.CASCADE)
     address_code = models.CharField(max_length=6, help_text="00-000", verbose_name="kod")
     address_str = models.CharField(max_length=128, verbose_name="Ulica i nr")
     address_no = models.CharField(max_length=16, null=True, verbose_name="nr lokalu")
@@ -81,6 +86,7 @@ class Appartment(models.Model):
     deposit = models.SmallIntegerField(choices=DEPOSIT_VALUES, verbose_name="zwrotna kaucja")
     fees = models.ForeignKey(Fee, on_delete=models.CASCADE)
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
+    best_app = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['address_city', 'price']
@@ -88,51 +94,27 @@ class Appartment(models.Model):
     def __str__(self):
         return self.app_name
 
-
-
-class User(models.Model):
-    username = models.CharField(max_length=64)
-
-    class Meta:
-        ordering = ['username']
-
-    def __str__(self):
-        return self.username
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class User(models.Model):
-    username = models.CharField(max_length=64)
-
-    class Meta:
-        ordering = ['username']
-
-    def __str__(self):
-        return self.username
-
 class Photo(models.Model):
-    path = models.ImageField(max_length=128, upload_to="photos/", verbose_name="zdjęcie")
-    creation_date = models.DateTimeField(auto_now_add=True, verbose_name="data dodania")
+    path = models.ImageField(max_length=128, upload_to="photos/", verbose_name="zdjęcie apartamentu")
+    appartment = models.ForeignKey(Appartment, on_delete=models.CASCADE)
+
+
+class Booking(models.Model):
+    checkin_date = models.DateTimeField(verbose_name="Rezerwacja od dnia")
+    checkout_date = models.DateTimeField(verbose_name="Rezerwacja do dnia")
+    appartment = models.ForeignKey(Appartment, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('checkin_date', 'checkout_date', 'appartment')
+
+    def __str__(self):
+        return f'{self.appartment}, {self.checkin_date}, {self.checkout_date}, {self.user}'
+
+
+class Article(models.Model):
+    name = models.CharField(max_length=60, verbose_name="Nazwa artykułu")
+    article_text = models.TextField(null=True, blank=True)
+
+
 

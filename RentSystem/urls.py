@@ -18,9 +18,16 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
+from apprtrent.views import HomeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('home', HomeView.as_view(), name="home"),
+    # path('appartments', AppartmentsView.as_View(), name="appartments"),
+    # path('appartments/city', AppartmentCityView.as_View(), name="city-appartments"),
+    # path('appartment/city/<int:id>', AppartmentView.as_View(), name="appartment"),
+    # path('user/)
+
 
 
 

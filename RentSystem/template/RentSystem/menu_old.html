@@ -1,0 +1,10 @@
+<div>
+    <ul>
+        <li><a href="{% url 'index' %}">Home</a></li>
+        {% if perms.exercises.new_student %}                <!-- nazwa aplikacji i nazwa uprawnienia -->
+        <li><a href="{% url 'add' %}">Dodaj studenta</a></li>
+        {% endif %}
+        <li><a href="{% url 'search' %}">Wyszukaj studenta</a></li>
+    </ul>
+
+</div>
