@@ -1,0 +1,13 @@
+{% extends 'apprtrent/base.html' %}
+
+{% block title %}Logowanie{% endblock %}
+
+{% block content %}
+  <h3>Logowanie</h3>
+    <p></p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+{% endblock %}
