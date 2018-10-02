@@ -10,10 +10,12 @@ class UserCreationForm2(forms2.UserCreationForm):
    class Meta(forms2.UserCreationForm.Meta):
        model = User
 
+
 class AddAppartmentPhotoForm(forms.ModelForm):
+
     class Meta:
         model = Photo
-        fields = '__all__'
+        fields = ('path',)
 
 
 

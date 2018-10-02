@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
+from django.views.generic import CreateView
 
 from apprtrent.forms import AddAppartmentPhotoForm, UserCreationForm2
 from apprtrent.models import Appartment
@@ -40,35 +41,35 @@ class SignUPView(View):
 # w indexe są odnośniki do linków, gdzie jest położenie plików
 
 
-class AddAppartment(View):
-    def get(self, request):
-        form = AddPhotoForm()
-        return render(request, "photoalbum/display.html", {"form": form,
-                                                           "button": "Dodaj fotkę"})
+class AddAppartment(CreateView):
 
-    def post(self, request):
-        form = AddPhotoForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse('index'))
-        else:
-            return render(request, "photoalbum/display.html", {"form": form,
-                                                                   "button": "Dodaj fotkę"})
+    model = Appartment
+    fields = '__all__'
+    template_name_suffix = '_create_form'       # zmienia nazwę szablonu z appartment_form na appartment_create_form
+    success_url = reverse_lazy('display')
+    def form_valid(self, form):
+        self.object = form.save()
+        self.success_url = reverse('add-photo', args=[self.object.id])
+        return super().form_valid(form)
 
 
 class AddAppartmentsPhoto(View):
 
-    def get(self, request):
-        form = AddAppartmentPhotoForm()
-        return render(request, "apprtrent/display.html", {"form": form,
-                                                           "button": "Dodaj zdjęcie"})
-    def post(self, request):
-        form = AddAppartmentPhotoForm(request.POST, request.FILES)
+    def get(self, request, appartment_id):
+        appartment = Appartment.objects.get(pk=appartment_id)
+        form = AddAppartmentPhotoForm(instance=appartment)
+
+        return render(request, "apprtrent/display.html", {"form": form, "button": "Dodaj zdjęcie"})
+
+    def post(self, request, appartment_id):
+        appartment = Appartment.objects.get(pk=appartment_id)
+        form = AddAppartmentPhotoForm(request.POST, request.FILES, instance=appartment)
         if form.is_valid():
             form.save()
-            return redirect(reverse('home'))
+            return redirect(reverse('add-photo', args=[appartment_id]))
         else:
             return render(request, "apprtrent/display.html", {"form": form, "button": "Dodaj zdjęcie"})
+
 
 
 

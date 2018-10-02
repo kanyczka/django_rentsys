@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
-from apprtrent.views import HomeView, SignUPView
+from apprtrent.views import HomeView, SignUPView, AddAppartment, AddAppartmentsPhoto
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,10 +27,11 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(), name="login"),
     path('logout/', auth_views.LogoutView.as_view(), {'next_page': '/'}, name="logout"),
     path('signup/', SignUPView.as_view(), name="signup"),
-
     # path('appartments', AppartmentsView.as_View(), name="appartments"),
     # path('appartments/city', AppartmentCityView.as_View(), name="city-appartments"),
     # path('appartment/city/<int:id>', AppartmentView.as_View(), name="appartment"),
+    path('add_appartment', AddAppartment.as_view(), name="add-appartment"),
+    path('add_photo/<int:appartment_id>', AddAppartmentsPhoto.as_view(), name="add-photo")
     # path('user/)
 
 
