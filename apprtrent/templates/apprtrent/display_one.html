@@ -1,0 +1,28 @@
+{% extends "apprtrent/base.html" %}
+
+{% block content %}
+
+
+<h3> {{ appartment.app_name }} </h3>
+{{ appartment.description }}
+
+
+    <table class="table table-striped">
+        <tr>
+    {% for photo in photos %}
+          <td width="20%"><img width="300px" src="{{ photo.path.url }}"/></td>
+    {%  endfor %}
+            </tr>
+    </table>
+
+    <div class="container-fluid">
+        {% for fac in facilities %}
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{ fac.name }}</li>
+            </ul>
+        {% endfor %}
+    <p></p>
+    </div>
+
+{% endblock %}
+

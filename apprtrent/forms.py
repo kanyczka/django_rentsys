@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import EmailValidator, URLValidator
-from apprtrent.models import Photo, User
+from apprtrent.models import Photo, User, Appartment
 
 from django.contrib.auth import forms as forms2
 
@@ -18,4 +18,13 @@ class AddAppartmentPhotoForm(forms.ModelForm):
         fields = ('path',)
 
 
+class AddAppartmentForm(forms.ModelForm):
+
+    class Meta:
+        model = Appartment
+        fields = '__all__'
+        widgets = {
+            'facilities': forms.CheckboxSelectMultiple,
+            'fees': forms.CheckboxSelectMultiple,
+        }
 

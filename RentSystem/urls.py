@@ -19,7 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
-from apprtrent.views import HomeView, SignUPView, AddAppartment, AddAppartmentsPhoto
+from apprtrent.views import HomeView, SignUPView, AddAppartment, AddAppartmentsPhoto, AppartmensView, \
+    AppartmentsByCityView, AppartmentView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,7 +32,11 @@ urlpatterns = [
     # path('appartments/city', AppartmentCityView.as_View(), name="city-appartments"),
     # path('appartment/city/<int:id>', AppartmentView.as_View(), name="appartment"),
     path('add_appartment', AddAppartment.as_view(), name="add-appartment"),
-    path('add_photo/<int:appartment_id>', AddAppartmentsPhoto.as_view(), name="add-photo")
+    path('add_photo/<int:appartment_id>', AddAppartmentsPhoto.as_view(), name="add-photo"),
+    # path('appartment/<int:appartment_id>', AppartmentView.as_view(), name="appartment"),
+    path('appartments/', AppartmensView.as_view(), name="appartments"),
+    path('appartments_city/', AppartmentsByCityView.as_view(), name="apartments-in-city"),
+    path('appartment/<int:appartment_id>', AppartmentView.as_view(), name="appartment")
     # path('user/)
 
 

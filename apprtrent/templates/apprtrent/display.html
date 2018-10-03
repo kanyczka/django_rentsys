@@ -2,12 +2,28 @@
 
 {% block content %}
 
-<form method="POST" action="#" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" value="Ok">{{ button }}</button>
+<div class="select2-container">
+    <p></p>
+<h3> Dostępne apartamenty </h3>
+    {% for app in appartments %}
+{#        {% for photo in app.photo_set %}#}
+{#            <img width="250px" src="{{ photo.path.url }}"/>#}
+{#        {%  endfor %}#}
+            <img width="250px" src="{{ app.photo_set.first.path.url }}"/>
 
-</form>
+    <div class="container-fluid">
+        <h4>{{ app.app_name }}</h4><br>
+        {{ app.description }}<br>
+        {% for af in app.facilities.all %}
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ af.name }}</li>
+        </ul>
+        {% endfor %}
+    <p></p>
+    </div>
+    {% endfor %}
+</div>
 
-
+</div>
 {% endblock %}
+

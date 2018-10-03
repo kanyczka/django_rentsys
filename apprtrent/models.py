@@ -103,13 +103,21 @@ class Appartment(models.Model):
 
     class Meta:
         ordering = ['address_city', 'price']
+        permissions = (
+            ("new_appartment", "Can add new appartment"),     # niestandardowe uprawnienie - ograniczanie dostępu'new_student' - nazwa uprawnienia
+            )
 
     def __str__(self):
         return self.app_name
 
 
+def app_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/app_<id>/<filename>
+    return 'app_{0}/{1}'.format(instance.appartment.id, filename)
+
 class Photo(models.Model):
-    path = models.ImageField(max_length=128, upload_to="photos/", verbose_name="zdjęcie apartamentu")
+    # path = models.ImageField(max_length=128, upload_to="photos/", verbose_name="zdjęcie apartamentu")
+    path = models.ImageField(max_length=128, upload_to=app_directory_path, verbose_name="zdjęcie apartamentu")
     appartment = models.ForeignKey(Appartment, on_delete=models.CASCADE)
 
 
