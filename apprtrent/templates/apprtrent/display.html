@@ -6,9 +6,6 @@
     <p></p>
 <h3> Dostępne apartamenty </h3>
     {% for app in appartments %}
-{#        {% for photo in app.photo_set %}#}
-{#            <img width="250px" src="{{ photo.path.url }}"/>#}
-{#        {%  endfor %}#}
             <img width="250px" src="{{ app.photo_set.first.path.url }}"/>
 
     <div class="container-fluid">

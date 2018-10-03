@@ -6,19 +6,17 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
 from apprtrent.forms import AddAppartmentPhotoForm, UserCreationForm2, AddAppartmentForm
-from apprtrent.models import Appartment, Photo, Facility
+from apprtrent.models import Appartment, Photo, Facility, Owner
 
 
 # Home
 class HomeView(View):
 
     def get(self,request):
-        appartments = Appartment.objects.filter(best_app=True).order_by("price")
-        return render(request, "apprtrent/home.html")
-        # return render(request, "apprtrent/home.html", {"appartments": appartments})
+        return redirect(reverse('appartments'))
 
 # Tworzenie nowego usera
 class SignUPView(View):
@@ -56,6 +54,15 @@ class SignUPView(View):
 #         return super().form_valid(form)
 
 
+# lista apartamentów do edycji
+class AppartmentsEditList(View):
+    def get(self, request):
+        appartments = Appartment.objects.all().order_by("address_city", "price")
+        photos = Photo.objects.all()
+        return render(request, "apprtrent/appartment_edit_list.html", {"appartments": appartments, "photos": photos})
+
+
+# dodawanie apartamentu z ograniczonymi uprawnieniami
 class AddAppartment(PermissionRequiredMixin, View):
     permission_required = 'apprtrent.new_appartment'
 
@@ -68,6 +75,32 @@ class AddAppartment(PermissionRequiredMixin, View):
             appartment = form.save()
             return redirect(reverse('add-photo', args=[appartment.id]))
         return render(request, "apprtrent/appartment_create_form.html", {"form": form})
+
+
+# edycja i zmiana danych w apartamentcie
+class ChangeAppartment(UpdateView):
+
+    model = Appartment
+    fields = '__all__'
+    template_name_suffix ='_update_form'
+    pk_url_kwarg = 'appartment_pk'
+    success_url = reverse_lazy('edit-list-appartment')
+
+
+# usuwanie apartamentu
+class DeleteAppartment(DeleteView):
+
+    model = Appartment
+    pk_url_kwarg = 'appartment_pk'
+    success_url = reverse_lazy('edit-list-appartment')
+
+
+# dodawanie właściciela
+class AddOwner(CreateView):
+    model = Owner
+    fields = '__all__'
+    template_name_suffix = '_create_form'
+    success_url = reverse_lazy('home')
 
 
 # dodawanie zdjęć do apartamentu
@@ -91,7 +124,7 @@ class AddAppartmentsPhoto(View):
         return render(request, "apprtrent/display_form.html", {"form": form, "button": "Dodaj zdjęcie"})
 
 
-# pokazuje wszystkie apartamenty
+# pokazuje apartamenty klientom - z zaznaczonym best_app - home
 class AppartmensView(View):
     def get(self, request):
         appartments = Appartment.objects.filter(best_app=True)

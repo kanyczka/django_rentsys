@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import EmailValidator, URLValidator
-from apprtrent.models import Photo, User, Appartment
+from apprtrent.models import Photo, User, Appartment, Owner
 
 from django.contrib.auth import forms as forms2
 
@@ -27,4 +27,12 @@ class AddAppartmentForm(forms.ModelForm):
             'facilities': forms.CheckboxSelectMultiple,
             'fees': forms.CheckboxSelectMultiple,
         }
+
+
+class AddOwnerForm(forms.ModelForm):
+
+    class Meta:
+        model = Owner
+        fields = '__all__'
+
 

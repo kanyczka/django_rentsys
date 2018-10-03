@@ -2,14 +2,14 @@
 
 {% block content %}
     <div class="container-fluid">
-        <h3>Dodawanie apartamentu</h3><br>
+        <h3>Edycja apartamentu</h3><br>
     </div>
 
 <form method="POST" action="#" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
 
-    <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Dodaj</button>
+    <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">OK</button>
     <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
 </form>
 

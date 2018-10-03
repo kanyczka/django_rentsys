@@ -95,7 +95,6 @@ class Appartment(models.Model):
     facilities = models.ManyToManyField(Facility, verbose_name="udogodnienia/wyposażenie")
     fees = models.ManyToManyField(Fee, verbose_name="dodatkowe opłąty")
     price = models.DecimalField(max_digits=6, decimal_places=2, verbose_name="Cena")
-    own_parking = models.BooleanField(default=False, verbose_name="miejsce parkingowe")
     deposit = models.SmallIntegerField(choices=DEPOSIT_VALUES, verbose_name="zwrotna kaucja")
     best_app = models.BooleanField(default=True, verbose_name="wyróżniony", help_text="czy apartament ma być pokazywany na stronie głównej")
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, verbose_name="właściciel")
@@ -104,7 +103,10 @@ class Appartment(models.Model):
     class Meta:
         ordering = ['address_city', 'price']
         permissions = (
-            ("new_appartment", "Can add new appartment"),     # niestandardowe uprawnienie - ograniczanie dostępu'new_student' - nazwa uprawnienia
+            ("new_appartment", "Can add new appartment"),
+            # ("change_appartment", "Can change appartment"),
+            # ("delete_appartment", "Can delete appartment"),
+
             )
 
     def __str__(self):

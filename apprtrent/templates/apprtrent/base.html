@@ -11,8 +11,8 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="{% url 'home' %}">RentSystem</a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="{% url 'home' %}">RentSys</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -22,11 +22,15 @@
 
 
         {% if request.user.is_authenticated %}
-        {{ request.user }}
+            {% include "apprtrent/menu_manage.html" %}
+            {{ request.user }}
 
-        <a href="{% url 'logout' %}">Wyloguj się</a>
+            <a href="{% url 'logout' %}">Wyloguj się</a>
+
         {% else %}
-        <a href="{% url 'login' %}">Zaloguj się</a> / <a href="{% url 'signup' %}">Rejestracja</a>
+            <a href="{% url 'login' %}">Zaloguj się</a> / <a href="{% url 'signup' %}">Rejestracja</a>
+
+
         {% endif %}
 
     </nav>
