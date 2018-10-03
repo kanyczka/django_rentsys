@@ -1,6 +1,34 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+APP_FACILITIES = (
+    (1, "wifi"),
+     (2, "TV kablowa"),
+     (3, "TV"),
+     (4, "winda"),
+     (4, "wyposażona kuchnia"),
+     (5, "zestaw do parzenia kawy"),
+     (6, "żelazko"),
+     (7, "suszarka"),
+     (8, "pralka"),
+     (9, "taras/balkon"),
+     (10, "klimatyzacja"),
+     (11, "prysznic"),
+     (12, "wanna"),
+     (13, "piekarnik"),
+     (14, "mikrofalówka"),
+     (15, "kominek"),
+ )
+
+DEPOSIT_VALUES = (
+    (1, "100"),
+    (2, "200"),
+    (3, "300"),
+    (4, "400"),
+    (5, "500"),
+    (6, "600"),
+)
+
 
 class User(AbstractUser):
     class Meta:
@@ -31,22 +59,11 @@ class Owner(models.Model):
         return f'{self.first_name} {self.last_name} {self.company_name}'
 
 
-DEPOSIT_VALUES = (
-    (1, "100"),
-    (2, "200"),
-    (3, "300"),
-    (4, "400"),
-    (5, "500"),
-    (6, "600"),
-)
-
-
-class Fee(models.Model):
-    name = models.CharField(max_length=64, verbose_name="dodatkowa opłata")
-    fee_value = models.DecimalField(max_digits=6, decimal_places=2)
+class City(models.Model):
+    city_name = models.CharField(max_length=60, verbose_name="miasto")
 
     def __str__(self):
-        return self.name
+        return self.city_name
 
 class Facility(models.Model):
     name = models.CharField(max_length=64, verbose_name="Udogodnienia/Wyposażenie")
@@ -54,11 +71,13 @@ class Facility(models.Model):
     def __str__(self):
         return self.name
 
-class City(models.Model):
-    city_name = models.CharField(max_length=60, verbose_name="miasto")
+class Fee(models.Model):
+    name = models.CharField(max_length=64, verbose_name="dodatkowa opłata")
+    value = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return self.city_name
+        return self.name
+
 
 
 class Appartment(models.Model):
@@ -73,13 +92,13 @@ class Appartment(models.Model):
     no_of_rooms = models.SmallIntegerField(verbose_name="liczba pokoi")
     no_of_guests = models.SmallIntegerField(verbose_name="liczba osób")
     no_of_beds = models.SmallIntegerField(verbose_name="liczba łóżek")
-    owner = models.ForeignKey(Owner, on_delete=models.CASCADE, verbose_name="właściciel")
+    facilities = models.ManyToManyField(Facility, verbose_name="udogodnienia/wyposażenie")
+    fees = models.ManyToManyField(Fee, verbose_name="dodatkowe opłąty")
     price = models.DecimalField(max_digits=6, decimal_places=2, verbose_name="Cena")
-    facilities = models.ForeignKey(Facility, on_delete=models.CASCADE, verbose_name="Udogodnienia/Wyposażenie")
-    fees = models.ForeignKey(Fee, on_delete=models.CASCADE, verbose_name="dodatkowe opłaty")
     own_parking = models.BooleanField(default=False, verbose_name="miejsce parkingowe")
     deposit = models.SmallIntegerField(choices=DEPOSIT_VALUES, verbose_name="zwrotna kaucja")
     best_app = models.BooleanField(default=True, verbose_name="wyróżniony", help_text="czy apartament ma być pokazywany na stronie głównej")
+    owner = models.ForeignKey(Owner, on_delete=models.CASCADE, verbose_name="właściciel")
 
 
     class Meta:
@@ -87,6 +106,7 @@ class Appartment(models.Model):
 
     def __str__(self):
         return self.app_name
+
 
 class Photo(models.Model):
     path = models.ImageField(max_length=128, upload_to="photos/", verbose_name="zdjęcie apartamentu")

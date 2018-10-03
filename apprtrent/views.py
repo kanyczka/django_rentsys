@@ -47,6 +47,7 @@ class AddAppartment(CreateView):
     fields = '__all__'
     template_name_suffix = '_create_form'       # zmienia nazwę szablonu z appartment_form na appartment_create_form
     success_url = reverse_lazy('display')
+
     def form_valid(self, form):
         self.object = form.save()
         self.success_url = reverse('add-photo', args=[self.object.id])
@@ -65,11 +66,13 @@ class AddAppartmentsPhoto(View):
         appartment = Appartment.objects.get(pk=appartment_id)
         form = AddAppartmentPhotoForm(request.POST, request.FILES, instance=appartment)
         if form.is_valid():
-            form.save()
-            return redirect(reverse('add-photo', args=[appartment_id]))
-        else:
-            return render(request, "apprtrent/display.html", {"form": form, "button": "Dodaj zdjęcie"})
+            photo = form.save()
+            # return redirect(reverse('home'))
+            return redirect(reverse('add-photo', args=[photo.appartment_id]))   # todo jak przekazać app.id???
+        return render(request, "apprtrent/display.html", {"form": form, "button": "Dodaj zdjęcie"})
 
+
+# class AppartmentView(View):
 
 
 
