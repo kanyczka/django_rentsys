@@ -32,11 +32,18 @@
 
 <nav class="navbar navbar-light bg-light">
     <span class="navbar-text">
-    Dostępne terminy: <br>
 
-    {{ form.checkin_date|SHORT_DATE_FORMAT }}<br>
+    <div class="container-fluid">
+        <h3>Rezerwacja apartamentu</h3><br>
+    </div>
 
-    {{ form.checkout_date|SHORT_DATE_FORMAT }}
+<form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
+    <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
+</form>
 
 
 
