@@ -4,18 +4,26 @@
 
 <div class="select2-container">
     <p></p>
-<h3> Dostępne apartamenty </h3>
+        <nav class="navbar navbar-light bg-light">
+            <span class="navbar-text">
+
+            <h3> Dostępne apartamenty </h3>
+            </span>
+        </nav>
+
     {% for app in appartments %}
-            <img width="250px" src="{{ app.photo_set.first.path.url }}"/>
+        <a href="{{ app.photo_set.first.path.url }}"><img width="250px" src="{{ app.photo_set.first.path.url }}"/>
+        </a>
 
     <div class="container-fluid">
-        <h4>{{ app.app_name }}</h4><br>
-        {{ app.description }}<br>
-        {% for af in app.facilities.all %}
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">{{ af.name }}</li>
-        </ul>
-        {% endfor %}
+        <p></p>
+        <a href="{% url 'appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a><br>
+            {{ app.description }}<br>
+            {% for af in app.facilities.all %}
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{ af.name }}</li>
+            </ul>
+            {% endfor %}
     <p></p>
     </div>
     {% endfor %}

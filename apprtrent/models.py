@@ -94,14 +94,15 @@ class Appartment(models.Model):
     no_of_beds = models.SmallIntegerField(verbose_name="liczba łóżek")
     facilities = models.ManyToManyField(Facility, verbose_name="udogodnienia/wyposażenie")
     fees = models.ManyToManyField(Fee, verbose_name="dodatkowe opłąty")
-    price = models.DecimalField(max_digits=6, decimal_places=2, verbose_name="Cena")
+    day_price = models.DecimalField(max_digits=6, default=200.00, decimal_places=2, verbose_name="Cena za dzień")
+    coders_monthly_price = models.DecimalField(max_digits=6, default=1500.00, decimal_places=2, verbose_name="Cena za mc dla kursantów Coderslab")
     deposit = models.SmallIntegerField(choices=DEPOSIT_VALUES, verbose_name="zwrotna kaucja")
     best_app = models.BooleanField(default=True, verbose_name="wyróżniony", help_text="czy apartament ma być pokazywany na stronie głównej")
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, verbose_name="właściciel")
 
 
     class Meta:
-        ordering = ['address_city', 'price']
+        ordering = ['address_city', 'app_name']
         permissions = (
             ("new_appartment", "Can add new appartment"),
             # ("change_appartment", "Can change appartment"),

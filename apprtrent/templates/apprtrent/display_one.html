@@ -2,17 +2,24 @@
 
 {% block content %}
 
+<nav class="navbar navbar-light bg-light">
+    <span class="navbar-text">
 
-<h3> {{ appartment.app_name }} </h3>
-{{ appartment.description }}
+        <h3> {{ appartment.app_name }} </h3>
+        <p class="text-body">{{ appartment.description }}<br></p>
+        <p class="font-weight-bold">Cena specjalna dla kursantów Coderslab:{{ appartment.coders_monthly_price }}PLN za miesiąc <br>
+            Cena regularna za dzień od: {{ appartment.day_price }}PLN
 
+        </p>
+    </span>
+</nav>
 
     <table class="table table-striped">
         <tr>
-    {% for photo in photos %}
-          <td width="20%"><img width="300px" src="{{ photo.path.url }}"/></td>
-    {%  endfor %}
-            </tr>
+             {% for photo in photos %}
+                 <td width="20%"><a href="{{ photo.path.url }}"><img width="300px" src="{{ photo.path.url }}"/></a></td>
+            {%  endfor %}
+        </tr>
     </table>
 
     <div class="container-fluid">
@@ -21,8 +28,13 @@
                 <li class="list-group-item">{{ fac.name }}</li>
             </ul>
         {% endfor %}
-    <p></p>
     </div>
+
+<nav class="navbar navbar-light bg-light">
+    <span class="navbar-text">
+    Dostępne terminy: 
+
+
 
 {% endblock %}
 

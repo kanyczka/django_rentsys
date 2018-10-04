@@ -9,7 +9,7 @@ from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
 from apprtrent.forms import AddAppartmentPhotoForm, UserCreationForm2, AddAppartmentForm
-from apprtrent.models import Appartment, Photo, Facility, Owner
+from apprtrent.models import Appartment, Photo, Facility, Owner, City
 
 
 # Home
@@ -110,7 +110,7 @@ class AddAppartmentsPhoto(View):
         appartment = Appartment.objects.get(pk=appartment_id)
         form = AddAppartmentPhotoForm(instance=appartment)
 
-        return render(request, "apprtrent/display_form.html", {"form": form, "appartment": appartment, "button": "Dodaj zdjęcie"})
+        return render(request, "apprtrent/add_photos_form.html", {"form": form, "appartment": appartment, "button": "Dodaj zdjęcie"})
 
     def post(self, request, appartment_id):
         appartment = Appartment.objects.get(pk=appartment_id)
@@ -121,7 +121,7 @@ class AddAppartmentsPhoto(View):
             photo.save()
             # return redirect(reverse('home'))
             return redirect(reverse('add-photo', kwargs={'appartment_id': photo.appartment_id}))
-        return render(request, "apprtrent/display_form.html", {"form": form, "button": "Dodaj zdjęcie"})
+        return render(request, "apprtrent/add_photos_form.html", {"form": form, "button": "Dodaj zdjęcie"})
 
 
 # pokazuje apartamenty klientom - z zaznaczonym best_app - home
@@ -138,6 +138,14 @@ class AppartmentsByCityView(View):
     def get(self, request, city):
         appartments = Appartment.objects.filter(address_city__appartment=city)
         return render(request, "apprtrent/display.html", {"appartments": appartments})
+
+
+# # wybór miasta
+# class ChooseCityView(View):
+#     def get(self, request):
+#         city = City.objects.all()
+#         return render
+
 
 
 # pokazuje wybrany apartament
