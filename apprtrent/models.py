@@ -1,24 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from datetime import date
 
-APP_FACILITIES = (
-    (1, "wifi"),
-     (2, "TV kablowa"),
-     (3, "TV"),
-     (4, "winda"),
-     (4, "wyposażona kuchnia"),
-     (5, "zestaw do parzenia kawy"),
-     (6, "żelazko"),
-     (7, "suszarka"),
-     (8, "pralka"),
-     (9, "taras/balkon"),
-     (10, "klimatyzacja"),
-     (11, "prysznic"),
-     (12, "wanna"),
-     (13, "piekarnik"),
-     (14, "mikrofalówka"),
-     (15, "kominek"),
- )
 
 DEPOSIT_VALUES = (
     (1, "100"),
@@ -27,6 +10,10 @@ DEPOSIT_VALUES = (
     (4, "400"),
     (5, "500"),
     (6, "600"),
+    (7, "700"),
+    (8, "800"),
+    (9, "900"),
+    (10, "1000")
 )
 
 
@@ -95,8 +82,8 @@ class Appartment(models.Model):
     facilities = models.ManyToManyField(Facility, verbose_name="udogodnienia/wyposażenie")
     fees = models.ManyToManyField(Fee, verbose_name="dodatkowe opłąty")
     day_price = models.DecimalField(max_digits=6, default=200.00, decimal_places=2, verbose_name="Cena za dzień")
-    coders_monthly_price = models.DecimalField(max_digits=6, default=1500.00, decimal_places=2, verbose_name="Cena za mc dla kursantów Coderslab")
-    deposit = models.SmallIntegerField(choices=DEPOSIT_VALUES, verbose_name="zwrotna kaucja")
+    coders_weekly_price = models.DecimalField(max_digits=6, default=400.00, decimal_places=2, verbose_name="Cena tygodniowego wynajmu dla kursantów Coderslab")
+    deposit = models.SmallIntegerField(default=0, verbose_name="zwrotna kaucja")
     best_app = models.BooleanField(default=True, verbose_name="wyróżniony", help_text="czy apartament ma być pokazywany na stronie głównej")
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, verbose_name="właściciel")
 
@@ -125,8 +112,8 @@ class Photo(models.Model):
 
 
 class Booking(models.Model):
-    checkin_date = models.DateTimeField(verbose_name="Rezerwacja od dnia")
-    checkout_date = models.DateTimeField(verbose_name="Rezerwacja do dnia")
+    checkin_date = models.DateField(default=date.today, blank=True, verbose_name="Rezerwacja od dnia")
+    checkout_date = models.DateField(verbose_name="Rezerwacja do dnia")
     appartment = models.ForeignKey(Appartment, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

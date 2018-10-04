@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import EmailValidator, URLValidator
-from apprtrent.models import Photo, User, Appartment, Owner
+from apprtrent.models import Photo, User, Appartment, Owner, Booking
 
 from django.contrib.auth import forms as forms2
 
@@ -35,4 +35,10 @@ class AddOwnerForm(forms.ModelForm):
         model = Owner
         fields = '__all__'
 
+
+class AddBookingForm(forms.ModelForm):
+
+    class Meta:
+        model = Booking
+        fields = ('checkin_date', 'checkout_date',)
 

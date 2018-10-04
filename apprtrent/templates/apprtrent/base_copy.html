@@ -21,19 +21,14 @@
         {% include "apprtrent/menu.html" %}
 
 
-
         {% if request.user.is_authenticated %}
+            {% include "apprtrent/menu_manage.html" %}
             {{ request.user }}
 
             <a href="{% url 'logout' %}">Wyloguj się</a>
 
         {% else %}
             <a href="{% url 'login' %}">Zaloguj się</a> / <a href="{% url 'signup' %}">Rejestracja</a>
-
-        {% if request.user.is_superuser %}
-            {% include "apprtrent/menu_manage.html" %}
-        {% endif %}
-
 
 
         {% endif %}

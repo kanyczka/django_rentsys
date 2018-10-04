@@ -7,8 +7,10 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from datetime import date, timedelta
 
-from apprtrent.forms import AddAppartmentPhotoForm, UserCreationForm2, AddAppartmentForm
+
+from apprtrent.forms import AddAppartmentPhotoForm, UserCreationForm2, AddAppartmentForm, AddBookingForm
 from apprtrent.models import Appartment, Photo, Facility, Owner, City
 
 
@@ -155,9 +157,50 @@ class AppartmentView(View):
         facilities = appartment.facilities.all()
         fees = appartment.fees.all()
         photos = appartment.photo_set.all()
-        return render(request, "apprtrent/display_one.html", {"appartment": appartment, "facilities": facilities, "fees": fees, "photos": photos})
+        booked_already = appartment.booking_set.all()
+        days_notavailable = []
+        if booked_already != None:
+            for i in len(booked_already):
+                for b in booked_already:
+                    date_in = b[0]
+                    date_out = b[1]
+                    days = [date_in + timedelta(days=x) for x in range((date_out - date_in).days + 1)]
+                    days_notavailable.append(days)
+        else:
+            days_notavailable = []
+        form = AddBookingForm(instance=appartment_id)
+        return render(request, "apprtrent/display_one.html", {"appartment": appartment,
+                                                              "facilities": facilities,
+                                                              "fees": fees, "photos": photos, "booked_already": booked_already,
+                                                              "form": form, "days_notavailable": days_notavailable})
+    def post(self, request, appartment_id):
+        appartment = Appartment.objects.get(pk=appartment_id)
+        form = AddBookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            # checkin_day = booking.checkin_date        jaka jest różnica????
+            checkin_date = form.cleaned_data['checkin_date']
+            checkout_date = form.cleaned_data['checkout_date']      # walidacja w formularzu
+            delta = checkout_date - checkin_date
+            days_booked = []
+            # days = [checkin_date + timedelta(days=x) for x in range((checkout_date - checkin_date).days + 1)]
+            for i in range(delta.days + 1):
+                days = list.append(checkin_date + timedelta(i))
 
 
+
+            return redirect(reverse('home'))
+        return render(request, "apprtrent/display_one.html", {"form": form, "button": "Dodaj zdjęcie"})  # jak przekazać znowu dane
+
+
+
+d1 = date(2008, 8, 15)  # start date
+d2 = date(2008, 9, 15)  # end date
+
+delta = d2 - d1         # timedelta
+
+for i in range(delta.days + 1):
+    print(d1 + timedelta(i))
 
 
 

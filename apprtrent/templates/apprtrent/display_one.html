@@ -32,7 +32,11 @@
 
 <nav class="navbar navbar-light bg-light">
     <span class="navbar-text">
-    Dostępne terminy: 
+    Dostępne terminy: <br>
+
+    {{ form.checkin_date|SHORT_DATE_FORMAT }}<br>
+
+    {{ form.checkout_date|SHORT_DATE_FORMAT }}
 
 
 
