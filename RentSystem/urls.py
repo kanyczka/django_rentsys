@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 from apprtrent.views import HomeView, SignUPView, AddAppartment, AddAppartmentsPhoto, AppartmensView, \
-    AppartmentsByCityView, AppartmentView, ChangeAppartment, AddOwner, AppartmentsEditList, DeleteAppartment
+    AppartmentView, ChangeAppartment, AddOwner, AppartmentsEditList, DeleteAppartment
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,7 +38,7 @@ urlpatterns = [
     path('add_owner', AddOwner.as_view(), name="add-owner"),
     path('appartments/', AppartmensView.as_view(), name="appartments"),
     path('appartments/<str:city>/', AppartmensView.as_view(), name="appartments-by-city"),
-    path('appartments_city/', AppartmentsByCityView.as_view(), name="apartments-in-city"),
+    # path('appartments/<str:city>/<int:distance>', AppartmensView.as_view(), name='appartments-by-city-and-distance'),
     path('appartment/<int:appartment_id>', AppartmentView.as_view(), name="appartment"),
 
 

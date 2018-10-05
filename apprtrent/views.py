@@ -11,7 +11,7 @@ from datetime import date, timedelta, datetime
 from django.db import IntegrityError
 
 from apprtrent.forms import AddAppartmentPhotoForm, UserCreationForm2, AddAppartmentForm, AddBookingForm, \
-    SearchAppatmentsInCity
+    SearchAppartmentsInCity, SearchAppartmentsInCityCodersLabDist
 from apprtrent.models import Appartment, Photo, Facility, Owner, City, Booking
 
 
@@ -37,11 +37,6 @@ class SignUPView(View):
         def get(self, request):
             form = UserCreationForm()
             return render(request, 'apprtrent/signup.html', {'form': form})
-
-
-
-# todo utworzyć dodawanie app i zdjęć do nich
-# w indexe są odnośniki do linków, gdzie jest położenie plików
 
 
 # class AddAppartment(CreateView):
@@ -127,7 +122,34 @@ class AddAppartmentsPhoto(View):
         return render(request, "apprtrent/add_photos_form.html", {"form": form, "button": "Dodaj zdjęcie"})
 
 
-# pokazuje apartamenty klientom - z zaznaczonym best_app - home, według miast
+# pokazuje apartamenty na stronie głównej, wszystkie lub w danym mieście
+# class AppartmensViewByCodersLabDist(View):
+#     def get(self, request, city, distance=None):
+#         if distance:
+#             appartments = Appartment.objects.filter(address_city=city).filter(distance=distance)
+#         else:
+#             appartments = Appartment.objects.filter(address_city=city)
+#         cities = City.objects.all()
+#         photos = Photo.objects.all()
+#         form = SearchAppartmentsInCityCodersLabDist()
+#         return render(request, "apprtrent/display.html", {"appartments": appartments, "form": form,
+#                                                           "cities": cities, "photos": photos,
+#                                                           "city": city, "distance": distance})
+#     def post(self, request, city, distance=None):
+#         form = SearchAppartmentsInCityCodersLabDist(request.POST)
+#         city = City.objects.get(city_name=city)
+#         appartments = Appartment.objects.filter(address_city=city)
+#         if form.is_valid():
+#             distance = form.cleaned_data['distance']
+#             return redirect(reverse('appartments-by-city-and-distance', kwargs={'city': city,
+#                                                                                     'distance': distance}))
+#         else:
+#             photos = Photo.objects.all()
+#             return render(request, "apprtrent/display.html", {"appartments": appartments, "form": form,
+#                                                           "photos": photos, "city": city, "distance": distance})
+
+
+# pokazuje apartamenty na stronie głównej, wszystkie lub w danym mieście
 class AppartmensView(View):
     def get(self, request, city=None):
         if city:
@@ -137,26 +159,26 @@ class AppartmensView(View):
             appartments = Appartment.objects.all()
         cities = City.objects.all()
         photos = Photo.objects.all()
-        form = SearchAppatmentsInCity()
+        form = SearchAppartmentsInCity()
         return render(request, "apprtrent/display.html", {"appartments": appartments, "form": form,
                                                           "cities": cities, "photos": photos})
     def post(self, request, city=None):
-        form = SearchAppatmentsInCity(request.POST)
+        form = SearchAppartmentsInCity(request.POST)
+        appartments = Appartment.objects.all()
+        cities = City.objects.all()
+        photos = Photo.objects.all()
         if form.is_valid():
             city = form.cleaned_data['address_city']
             # appartments = Appartment.objects.filter(address_city=city)
             return redirect(reverse('appartments-by-city', kwargs={'city': city}))
             # return render(request, "apprtrent/display.html", {"appartments": appartments})
-        else:
-            return render(request, "apprtrent/display.html", {'form': form})
+        return render(request, "apprtrent/display.html", {"appartments": appartments, "form": form,
+                                                          "cities": cities, "photos": photos})
 
 
 
-# pokazuje apartamenty tylko z wybranego miasta
-class AppartmentsByCityView(View):
-    def get(self, request, city):
-        appartments = Appartment.objects.filter(address_city__appartment=city)
-        return render(request, "apprtrent/display.html", {"appartments": appartments})
+
+
 
 
 # pokazuje wybrany apartament

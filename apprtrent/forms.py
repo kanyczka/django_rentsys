@@ -28,7 +28,8 @@ class AddAppartmentForm(forms.ModelForm):
             'fees': forms.CheckboxSelectMultiple,
         }
 
-class SearchAppatmentsInCity(forms.ModelForm):
+
+class SearchAppartmentsInCity(forms.ModelForm):
 
     class Meta:
         model = Appartment
@@ -36,6 +37,18 @@ class SearchAppatmentsInCity(forms.ModelForm):
         labels = {
             'address_city': 'Wybierz miasto ',
         }
+
+class SearchAppartmentsInCityCodersLabDist(forms.ModelForm):
+
+    class Meta:
+        model = Appartment
+        fields = ('distance', 'address_city',)
+        widgets = {
+            'address_city' :forms.HiddenInput
+        }
+
+
+
 
 
 
