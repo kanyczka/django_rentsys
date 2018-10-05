@@ -33,6 +33,11 @@ class SearchAppatmentsInCity(forms.ModelForm):
     class Meta:
         model = Appartment
         fields = ('address_city',)
+        labels = {
+            'address_city': 'Wybierz miasto ',
+        }
+
+
 
 
 class AddOwnerForm(forms.ModelForm):

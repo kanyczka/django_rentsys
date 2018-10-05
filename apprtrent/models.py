@@ -65,7 +65,7 @@ class Fee(models.Model):
 class Appartment(models.Model):
     app_name = models.CharField(max_length=128, verbose_name="Nazwa apartamentu")
     description = models.TextField(verbose_name="Opis apartamentu", blank=True)
-    address_city = models.ForeignKey(City, on_delete=models.CASCADE)
+    address_city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name="miasto")
     address_code = models.CharField(max_length=6, help_text="00-000", verbose_name="kod")
     address_str = models.CharField(max_length=128, verbose_name="Ulica i nr")
     address_no = models.CharField(max_length=16, blank=True, verbose_name="nr lokalu")

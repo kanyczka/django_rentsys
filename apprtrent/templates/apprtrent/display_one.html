@@ -16,10 +16,10 @@
             Cena regularna za dzień od:
             <span>{{ appartment.day_price }}PLN</span>
         </p>
-
+        <span><small>
         <table class="table table-bordered">
             <tbody>
-                <tr class="text-center">
+                <tr class="text-body text-center">
                   <td>do Coderslab: {{ appartment.get_distance_display }}</td>
                   <td>max osób: {{ appartment.no_of_guests }}</td>
                   <td>łóżek: {{ appartment.no_of_beds }}</td>
@@ -30,7 +30,8 @@
 
                 </tr>
             </tbody>
-    </table>
+        </table>
+        </small></span>
 
         <table class="table table-bordered">
             <tbody>
@@ -52,45 +53,44 @@
     </table>
 
     <div class="container-fluid">
+        <span><small>
         {% for fac in facilities %}
              <ul class="list-group list-group-flush">
                 <li class="list-group-item">{{ fac.name }}</li>
             </ul>
-        {% endfor %}
-    <br>
+        {% endfor %}<br>
+        </small></span>
     </div>
 
     <table>
-    <tr>
-    <td width="50%">
+        <tr>
+        <td width="50%">
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid"><h3>Rezerwacja apartamentu</h3>
 
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid"><h3>Rezerwacja apartamentu</h3></div>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <span class="text-danger"><small>{{ message }}</small></span>
+                {{ form.as_p }}
 
-
-
-    <form method="POST" action="">
-        {% csrf_token %}
-        <span class="text-danger"><small>{{ message }}</small></span>
-        {{ form.as_p }}
-
-        <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
-        <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
-    </form>
-    </nav>
-    </td>
-    <td width="50%">zarezerwowane dni:<br>
-                {% for b in booked_already %}
-                {{ b.checkin_date }} - {{ b.checkout_date }}<br>
-                {% endfor %}
-
-    </td>
-    </td>
-    </tr>
+                <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
+                <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
+            </form>
+                </div>
+            </nav>
+        </td>
+        <td width="50%">zarezerwowane dni:<br>
+                    {% if booked_already %}
+                        {% for b in booked_already %}
+                        {{ b.checkin_date }} - {{ b.checkout_date }}<br>
+                    {% endfor %}
+                    {% else %} Ten apartament nie ma jeszcze żadnych rezerwacji.
+                    {% endif %}
+        </td>
+        </tr>
     </table>
 
 
-    </nav>
 
 {% endblock %}
 

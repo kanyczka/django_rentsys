@@ -18,39 +18,57 @@
             </span>
         </nav>
 
+        <table>
+            {% for app in appartments %}
 
-    {% for app in appartments %}
-        <a href="{{ app.photo_set.first.path.url }}"><img width="250px" src="{{ app.photo_set.first.path.url }}"/></a>
-        <p></p>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                        <a href="{{ app.photo_set.first.path.url }}"><img width="250px" src="{{ app.photo_set.first.path.url }}"/></a>
+                        <p></p>
+                            </td>
+                            <td>
+                    <nav class="navbar navbar-light bg-light">
+                    <span class="navbar-text">
+                        <a href="{% url 'appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a><br>
+                        {{ app.description }}<br>
+                    </span>
+                    </nav>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="navbar navbar-light bg-light">
+                    <span><small>
 
-        <nav class="navbar navbar-light bg-light">
-            <span class="navbar-text">
+                    <table class="table table-bordered">
+                    <tbody>
+                        <tr class="text-center">
+                          <td>do Coderslab: {{ app.get_distance_display }}</td>
+                          <td>max osób: {{ app.no_of_guests }}</td>
+                          <td>łóżek: {{ app.no_of_beds }}</td>
+                          <td>pow.: {{ app.area }}mkw</td>
+                          <td>piętro: {{ app.floor }}</td>
+                          <td>pokoi: {{ app.no_of_rooms }}</td>
+                          <td>depozyt: {{ app.deposit }}</td>
 
-            <a href="{% url 'appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a><br>
-            {{ app.description }}<br>
-            </span>
-        </nav>
+                        </tr>
+                    </tbody>
+                    </table>
+                    </small></span>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
 
-    <div class="navbar navbar-light bg-light">
-        <p></p>
-            <table class="table table-bordered">
-            <tbody>
-                <tr class="text-center">
-                  <td>do Coderslab: {{ app.get_distance_display }}</td>
-                  <td>max osób: {{ app.no_of_guests }}</td>
-                  <td>łóżek: {{ app.no_of_beds }}</td>
-                  <td>pow.: {{ app.area }}mkw</td>
-                  <td>piętro: {{ app.floor }}</td>
-                  <td>pokoi: {{ app.no_of_rooms }}</td>
-                  <td>depozyt: {{ app.deposit }}</td>
+        </table>
 
-                </tr>
-            </tbody>
-    </table>
-    </div>
-    {% endfor %}
 </div>
 
-</div>
 {% endblock %}
 
