@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import EmailValidator, URLValidator
-from apprtrent.models import Photo, User, Appartment, Owner, Booking
+from apprtrent.models import Photo, User, Appartment, Owner, Booking, City
 
 from django.contrib.auth import forms as forms2
 
@@ -28,6 +28,12 @@ class AddAppartmentForm(forms.ModelForm):
             'fees': forms.CheckboxSelectMultiple,
         }
 
+class SearchAppatmentsInCity(forms.ModelForm):
+
+    class Meta:
+        model = Appartment
+        fields = ('address_city',)
+
 
 class AddOwnerForm(forms.ModelForm):
 
@@ -44,7 +50,7 @@ class AddBookingForm(forms.ModelForm):
 
     class Meta:
         model = Booking
-        fields = ('checkin_date', 'checkout_date', 'tenant',)
+        fields = ('checkin_date', 'checkout_date', 'email',)
 
     def clean(self):
         cleaned_data = super().clean()

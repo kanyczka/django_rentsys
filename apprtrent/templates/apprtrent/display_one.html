@@ -5,12 +5,39 @@
 <nav class="navbar navbar-light bg-light">
     <span class="navbar-text">
 
-        <h3> {{ appartment.app_name }} </h3>
-        <p class="text-body">{{ appartment.description }}<br></p>
-        <p class="font-weight-bold">Cena specjalna dla kursantów Coderslab:{{ appartment.coders_monthly_price }}PLN za miesiąc <br>
-            Cena regularna za dzień od: {{ appartment.day_price }}PLN
+        <h3 class="text-body"> {{ appartment.app_name }}</h3>
+        <h5 class="text-body">{{ appartment.address_city }}, ul. {{ appartment.address_str }}</h5>
 
+        <p>Cena specjalna dla kursantów Coderslab:
+            <span class="text-danger">{{ appartment.coders_weekly_price }}PLN za tydzień <br></span>
+            Cena regularna za dzień od:
+            <span>{{ appartment.day_price }}PLN</span>
         </p>
+
+
+        <table class="table table-bordered">
+            <tbody>
+                <tr class="text-center">
+                  <td>do Coderslab: {{ appartment.get_distance_display }}</td>
+                  <td>max osób: {{ appartment.no_of_guests }}</td>
+                  <td>łóżek: {{ appartment.no_of_beds }}</td>
+                  <td>pow.: {{ appartment.area }}mkw</td>
+                  <td>piętro: {{ appartment.floor }}</td>
+                  <td>pokoi: {{ appartment.no_of_rooms }}</td>
+                  <td>depozyt: {{ appartment.deposit }}</td>
+
+                </tr>
+            </tbody>
+    </table>
+
+        <table class="table table-bordered">
+            <tbody>
+                <tr class="text-body">
+                  <td>{{ appartment.description }}</td>
+                </tr>
+            </tbody>
+        </table>
+
     </span>
 </nav>
 
@@ -30,22 +57,23 @@
         {% endfor %}
     </div>
 
-<nav class="navbar navbar-light bg-light">
-    <span class="navbar-text">
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-text">
 
-    <div class="container-fluid">
-        <h3>Rezerwacja apartamentu</h3><br>
-    </div>
+        <div class="container-fluid"><h3>Rezerwacja apartamentu</h3><br></div>
 
-<form method="POST" action="" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
+    <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        zarezerwowane dni: {{ booked_after_today|length }}<br>
+        dzisiaj: {{ today }}
 
-    <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
-    <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
-</form>
+        <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
+        <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
+    </form>
 
-
+        </span>
+    </nav>
 
 {% endblock %}
 

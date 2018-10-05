@@ -6,11 +6,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
-from datetime import date, timedelta
+from django.views.generic import CreateView, UpdateView, DeleteView
+from datetime import date, timedelta, datetime
 
-
-from apprtrent.forms import AddAppartmentPhotoForm, UserCreationForm2, AddAppartmentForm, AddBookingForm
+from apprtrent.forms import AddAppartmentPhotoForm, UserCreationForm2, AddAppartmentForm, AddBookingForm, \
+    SearchAppatmentsInCity
 from apprtrent.models import Appartment, Photo, Facility, Owner, City, Booking
 
 
@@ -59,7 +59,7 @@ class SignUPView(View):
 # lista apartamentów do edycji
 class AppartmentsEditList(View):
     def get(self, request):
-        appartments = Appartment.objects.all().order_by("address_city", "price")
+        appartments = Appartment.objects.all().order_by("address_city")
         photos = Photo.objects.all()
         return render(request, "apprtrent/appartment_edit_list.html", {"appartments": appartments, "photos": photos})
 
@@ -126,13 +126,29 @@ class AddAppartmentsPhoto(View):
         return render(request, "apprtrent/add_photos_form.html", {"form": form, "button": "Dodaj zdjęcie"})
 
 
-# pokazuje apartamenty klientom - z zaznaczonym best_app - home
+# pokazuje apartamenty klientom - z zaznaczonym best_app - home, według miast
 class AppartmensView(View):
-    def get(self, request):
-        appartments = Appartment.objects.filter(best_app=True)
-        photos = Photo.objects.all()                                # todo jak pobrać tylko zdjęcia wybranych apartamentóœ
-        facilities = Facility.objects.all()
-        return render(request, "apprtrent/display.html", {"appartments": appartments, "photos": photos, "facilities": facilities})
+    def get(self, request, city=None):
+        if city:
+            city = City.objects.get(city_name=city)
+            appartments = Appartment.objects.filter(address_city=city)
+        else:
+            appartments = Appartment.objects.all()
+        cities = City.objects.all()
+        photos = Photo.objects.all()
+        form = SearchAppatmentsInCity()
+        return render(request, "apprtrent/display.html", {"appartments": appartments, "form": form,
+                                                          "cities": cities, "photos": photos})
+    def post(self, request, city=None):
+        form = SearchAppatmentsInCity(request.POST)
+        if form.is_valid():
+            city = form.cleaned_data['address_city']
+            # appartments = Appartment.objects.filter(address_city=city)
+            return redirect(reverse('appartments-by-city', kwargs={'city': city}))
+            # return render(request, "apprtrent/display.html", {"appartments": appartments})
+        else:
+            return render(request, "apprtrent/display.html", {'form': form})
+
 
 
 # pokazuje apartamenty tylko z wybranego miasta
@@ -157,40 +173,71 @@ class AppartmentView(View):
         facilities = appartment.facilities.all()
         fees = appartment.fees.all()
         photos = appartment.photo_set.all()
-        form = AddBookingForm(instance=appartment)
-        return render(request, "apprtrent/display_one.html", {"appartment": appartment,
-                                                              "facilities": facilities,
-                                                              "fees": fees, "photos": photos, "form": form})
-    def post(self, request, appartment_id):
-        appartment = Appartment.objects.get(pk=appartment_id)
-        facilities = appartment.facilities.all()
-        fees = appartment.fees.all()
-        photos = appartment.photo_set.all()
-        booked_already = appartment.booking_set.all()
+        today = date.today()
+        booked_already = appartment.booking_set.filter(checkout_date__gt=date.today())
+        a = booked_already.count()
+
         days_notavailable = []
         if booked_already:
-            for i in range(0, booked_already.count()):
+            for i in range(0, booked_already.count() - 1):
                 for b in booked_already:
                     date_in = b.checkin_date
                     date_out = b.checkout_date
                     days = [date_in + timedelta(days=x) for x in range((date_out - date_in).days + 1)]
                     days_notavailable.append(days)
+                    a = b
 
+            # days = [datetime.strftime(dn, "%d-%m-%Y") for dn in days_notavailable]
+                    # days.sort()
+                    # days_notavailable = [datetime.strftime(dn, "%d-%m-%Y") for dn in days]
+
+        form = AddBookingForm(instance=appartment)
+        return render(request, "apprtrent/display_one.html", {"appartment": appartment,
+                                                              "facilities": facilities,
+                                                              "fees": fees, "photos": photos,
+                                                              "booked_already": booked_already,
+                                                              "days_notavailable": days_notavailable,
+                                                              "today": today,
+                                                              "form": form})
+    def post(self, request, appartment_id):
+        appartment = Appartment.objects.get(pk=appartment_id)
+        facilities = appartment.facilities.all()
+        fees = appartment.fees.all()
+        photos = appartment.photo_set.all()
+        today = datetime.today()
+        today = today.strftime('%Y-%m-%d')
+        booked_after_today = appartment.booking_set.filter(checkout_date__gte=today)
         form = AddBookingForm(request.POST)
         if form.is_valid():
-            if not booked_already:      # jeżeli nie ma rezerwacji na ten lokal
-                booking = form.save()
-                return redirect(reverse('home'))
             booking = form.save(commit=False)
             booking.appartment = appartment
+            # booked_already = appartment.booking_set.filter(checkout_date__gt=booking.checkin_date)
+            days_notavailable = []
+            if booked_after_today:
+                for i in range(0, len(booked_after_today)-1):
+                    for b in booked_after_today:
+                        date_in = b.checkin_date
+                        date_out = b.checkout_date
+                        days = [date_in + timedelta(days=x) for x in range((date_out - date_in).days + 1)]
+                        days_notavailable.append(days)
+
+                        # days = [datetime.strptime(dn, "%Y-%m-%d") for dn in days_notavailable]
+                        # days.sort()
+                        # days_notavailable_sorted = [datetime.strftime(dn, "%Y-%m-%d") for dn in days]
+
+            if not booked_after_today:      # jeżeli nie ma rezerwacji na ten lokal po dzisiejszym dniu
+                form.save()
+                return redirect(reverse('home'))
+
             checkin_date = booking.checkin_date
             checkout_date = booking.checkout_date
             days_booked = [checkin_date + timedelta(days=x) for x in range((checkout_date - checkin_date).days + 1)]
-            if list(set(booked_already).intersection(set(days_booked))):
+
+            if list(set(booked_after_today).intersection(set(days_booked))):
                 return render(request, "apprtrent/display_one.html", {"appartment": appartment,
                                                                       "facilities": facilities,
                                                                       "fees": fees, "photos": photos,
-                                                                      "booked_already": booked_already,
+                                                                      "booked_after_today": booked_after_today,
                                                                       "form": form})
             booking.save()
 

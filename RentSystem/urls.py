@@ -37,6 +37,7 @@ urlpatterns = [
     path('add_photo/<int:appartment_id>', AddAppartmentsPhoto.as_view(), name="add-photo"),
     path('add_owner', AddOwner.as_view(), name="add-owner"),
     path('appartments/', AppartmensView.as_view(), name="appartments"),
+    path('appartments/<str:city>/', AppartmensView.as_view(), name="appartments-by-city"),
     path('appartments_city/', AppartmentsByCityView.as_view(), name="apartments-in-city"),
     path('appartment/<int:appartment_id>', AppartmentView.as_view(), name="appartment"),
 

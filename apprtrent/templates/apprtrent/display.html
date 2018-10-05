@@ -4,6 +4,13 @@
 
 <div class="select2-container">
     <p></p>
+
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        {{ form }} <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Szukaj</button>
+                        </p>
+                    </form>
+
         <nav class="navbar navbar-light bg-light">
             <span class="navbar-text">
 
@@ -11,20 +18,35 @@
             </span>
         </nav>
 
-    {% for app in appartments %}
-        <a href="{{ app.photo_set.first.path.url }}"><img width="250px" src="{{ app.photo_set.first.path.url }}"/>
-        </a>
 
-    <div class="container-fluid">
+    {% for app in appartments %}
+        <a href="{{ app.photo_set.first.path.url }}"><img width="250px" src="{{ app.photo_set.first.path.url }}"/></a>
         <p></p>
-        <a href="{% url 'appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a><br>
+
+        <nav class="navbar navbar-light bg-light">
+            <span class="navbar-text">
+
+            <a href="{% url 'appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a><br>
             {{ app.description }}<br>
-            {% for af in app.facilities.all %}
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">{{ af.name }}</li>
-            </ul>
-            {% endfor %}
-    <p></p>
+            </span>
+        </nav>
+
+    <div class="navbar navbar-light bg-light">
+        <p></p>
+            <table class="table table-bordered">
+            <tbody>
+                <tr class="text-center">
+                  <td>do Coderslab: {{ app.get_distance_display }}</td>
+                  <td>max osób: {{ app.no_of_guests }}</td>
+                  <td>łóżek: {{ app.no_of_beds }}</td>
+                  <td>pow.: {{ app.area }}mkw</td>
+                  <td>piętro: {{ app.floor }}</td>
+                  <td>pokoi: {{ app.no_of_rooms }}</td>
+                  <td>depozyt: {{ app.deposit }}</td>
+
+                </tr>
+            </tbody>
+    </table>
     </div>
     {% endfor %}
 </div>

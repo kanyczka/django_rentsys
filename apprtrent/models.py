@@ -3,17 +3,20 @@ from django.contrib.auth.models import AbstractUser
 from datetime import date
 
 
+DISTANCE = (
+    (1, "bardzo blisko"),
+    (2, "blisko"),
+    (3, "dojazd komunikacją miejską"),
+    (4, "dłuższy dojazd komunikacją miejską"),
+)
+
+
+
 class User(AbstractUser):
     class Meta:
         verbose_name = 'użytkownik'
         verbose_name_plural = 'użytkownicy'
         ordering = ['username']
-
-class Tenant(models.Model):
-    first_name = models.CharField(max_length=30, verbose_name="Imię")
-    last_name = models.CharField(max_length=64, verbose_name="Nazwisko")
-    email = models.EmailField(verbose_name="email")
-    tel_no = models.CharField(max_length=15, null=True, blank=True, verbose_name="Nr telefonu")
 
 
 class Owner(models.Model):
@@ -72,12 +75,13 @@ class Appartment(models.Model):
     no_of_guests = models.SmallIntegerField(verbose_name="liczba osób")
     no_of_beds = models.SmallIntegerField(verbose_name="liczba łóżek")
     facilities = models.ManyToManyField(Facility, verbose_name="udogodnienia/wyposażenie")
-    fees = models.ManyToManyField(Fee, verbose_name="dodatkowe opłąty")
+    fees = models.ManyToManyField(Fee, verbose_name="dodatkowe opłaty")
     day_price = models.DecimalField(max_digits=6, default=200.00, decimal_places=2, verbose_name="Cena za dzień")
     coders_weekly_price = models.DecimalField(max_digits=6, default=400.00, decimal_places=2, blank=True, null=True, verbose_name="Cena tygodniowego wynajmu dla kursantów Coderslab")
     deposit = models.SmallIntegerField(default=0, verbose_name="zwrotna kaucja")
     best_app = models.BooleanField(default=True, verbose_name="wyróżniony", help_text="czy apartament ma być pokazywany na stronie głównej")
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, verbose_name="właściciel")
+    distance = models.SmallIntegerField(choices=DISTANCE, verbose_name="odległość od Coderslab")
 
 
     class Meta:
@@ -108,13 +112,13 @@ class Booking(models.Model):
     checkin_date = models.DateField(default=date.today, blank=True, verbose_name="Rezerwacja od dnia")
     checkout_date = models.DateField(verbose_name="Rezerwacja do dnia")
     appartment = models.ForeignKey(Appartment, on_delete=models.CASCADE)
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    email = models.EmailField()
 
-    class Meta:
-        unique_together = ('checkin_date', 'checkout_date', 'appartment')
+    # class Meta:
+    #     unique_together = ('checkin_date', 'checkout_date', 'appartment')
 
     def __str__(self):
-        return f'{self.appartment}, {self.checkin_date}, {self.checkout_date}, {self.user}'
+        return f'{self.appartment}, {self.checkin_date}, {self.checkout_date}'
 
 
 class Article(models.Model):

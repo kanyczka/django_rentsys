@@ -8,7 +8,8 @@
     {% for app in appartments %}
         <table class="table table-striped">
             <tr>
-                <td width=70%><a href="{% url 'appartment' app.pk %}">{{ app.app_name }}, {{ app.address_city }}, {{ app.address_str }} / {{ app.address_no }}</a></td>
+                <td width=70%><a href="{% url 'appartment' app.pk %}">
+                    {{ app.app_name }}, {{ app.address_city }}, {{ app.address_str }} / {{ app.address_no }}</a></td>
                 <td width=10%><a class="btn btn-primary btn-sm" href="{% url 'update-appartment' app.pk %}" role="button">Edytuj</a></td>
                 <td width=10%><a class="btn btn-danger btn-sm" href="{% url 'delete-appartment' app.pk %}" role="button">Usuń</a></td>
                 <td width=10%><a class="btn btn-danger btn-sm" href="{% url 'add-photo' app.pk %}" role="button">Dodaj zdjęcia</a></td>
