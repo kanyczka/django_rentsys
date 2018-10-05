@@ -114,8 +114,8 @@ class Booking(models.Model):
     appartment = models.ForeignKey(Appartment, on_delete=models.CASCADE)
     email = models.EmailField()
 
-    # class Meta:
-    #     unique_together = ('checkin_date', 'checkout_date', 'appartment')
+    class Meta:
+        unique_together = ('checkin_date', 'checkout_date', 'appartment')
 
     def __str__(self):
         return f'{self.appartment}, {self.checkin_date}, {self.checkout_date}'

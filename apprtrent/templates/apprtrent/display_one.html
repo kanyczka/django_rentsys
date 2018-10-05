@@ -1,8 +1,11 @@
 {% extends "apprtrent/base.html" %}
 
 {% block content %}
+<span class="text-danger"><small>{{ message }}</small></span>
+
 
 <nav class="navbar navbar-light bg-light">
+
     <span class="navbar-text">
 
         <h3 class="text-body"> {{ appartment.app_name }}</h3>
@@ -13,7 +16,6 @@
             Cena regularna za dzień od:
             <span>{{ appartment.day_price }}PLN</span>
         </p>
-
 
         <table class="table table-bordered">
             <tbody>
@@ -51,28 +53,43 @@
 
     <div class="container-fluid">
         {% for fac in facilities %}
-            <ul class="list-group list-group-flush">
+             <ul class="list-group list-group-flush">
                 <li class="list-group-item">{{ fac.name }}</li>
             </ul>
         {% endfor %}
+    <br>
     </div>
 
+    <table>
+    <tr>
+    <td width="50%">
+
     <nav class="navbar navbar-light bg-light">
-        <span class="navbar-text">
+        <div class="container-fluid"><h3>Rezerwacja apartamentu</h3></div>
 
-        <div class="container-fluid"><h3>Rezerwacja apartamentu</h3><br></div>
 
-    <form method="POST" action="" enctype="multipart/form-data">
+
+    <form method="POST" action="">
         {% csrf_token %}
+        <span class="text-danger"><small>{{ message }}</small></span>
         {{ form.as_p }}
-        zarezerwowane dni: {{ booked_after_today|length }}<br>
-        dzisiaj: {{ today }}
 
         <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
         <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
     </form>
+    </nav>
+    </td>
+    <td width="50%">zarezerwowane dni:<br>
+                {% for b in booked_already %}
+                {{ b.checkin_date }} - {{ b.checkout_date }}<br>
+                {% endfor %}
 
-        </span>
+    </td>
+    </td>
+    </tr>
+    </table>
+
+
     </nav>
 
 {% endblock %}
