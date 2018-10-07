@@ -40,6 +40,7 @@ urlpatterns = [
     path('appartments/<str:city>/', AppartmensView.as_view(), name="appartments-by-city"),
     # path('appartments/<str:city>/<int:distance>', AppartmensView.as_view(), name='appartments-by-city-and-distance'),
     path('appartment/<int:appartment_id>', AppartmentView.as_view(), name="appartment"),
+    path('appartment/<int:appartment_id>/<str:message>', AppartmentView.as_view(), name="appartment-message"),
 
 
 

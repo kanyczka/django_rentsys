@@ -1,7 +1,14 @@
 {% extends "apprtrent/base.html" %}
+{% load crispy_forms_tags %}
+
 
 {% block content %}
-<span class="text-danger"><small>{{ message }}</small></span>
+<span class="text-danger">
+
+    {% if message %}
+        <small>{{ message }}</small>
+    {% endif %}
+</span>
 
 
 <nav class="navbar navbar-light bg-light">
@@ -68,10 +75,14 @@
             <nav class="navbar navbar-light bg-light">
                 <div class="container-fluid"><h3>Rezerwacja apartamentu</h3>
 
-            <form method="POST" action="">
+            <form method="POST" action="" class="form">
                 {% csrf_token %}
-                <span class="text-danger"><small>{{ message }}</small></span>
-                {{ form.as_p }}
+                <span class="text-danger">
+                    {% if message %}
+                        <small>{{ message }}</small>
+                    {% endif %}
+                </span>
+                {{ form|crispy }}
 
                 <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
                 <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
