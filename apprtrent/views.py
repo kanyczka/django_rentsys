@@ -151,7 +151,7 @@ class AddAppartmentsPhoto(View):
 
 
 # pokazuje apartamenty na stronie głównej, wszystkie lub w danym mieście
-class AppartmensView(View):
+class AppartmentsView(View):
     def get(self, request, city=None):
         if city:
             city = City.objects.get(city_name=city)
@@ -186,14 +186,24 @@ class AppartmentView(View):
         photos = appartment.photo_set.all()
         today = date.today()
         booked_already = appartment.booking_set.filter(checkout_date__gt=date.today())
-        # form = AddBookingForm({'appartment': appartment})
-        form = AddBookingForm(instance=appartment)
+        if booked_already:
+            for b in booked_already:
+                checkin_date = b.checkin_date
+                checkout_date = b.checkout_date
+                if checkout_date - (checkout_date - checkin_date) > today:
+                    first_booked = today
+                else:
+                    first_booked = checkout_date
+        else:
+            first_booked = today
+        # form = AddBookingForm(initial={'appartment': appartment})
+        form = AddBookingForm(instance=appartment, initial={"checkin_date": first_booked})
+
         return render(request, "apprtrent/display_one.html", {"message": message, "appartment": appartment,
                                                               "facilities": facilities,
                                                               "fees": fees, "photos": photos,
-                                                              "booked_already": booked_already,
-                                                              "today": today,
-                                                              "form": form})
+                                                              "booked_already": booked_already, "first_booked": first_booked,
+                                                              "today": today, "form": form})
     def post(self, request, appartment_id, message=None):
         appartment = Appartment.objects.get(pk=appartment_id)
         facilities = appartment.facilities.all()

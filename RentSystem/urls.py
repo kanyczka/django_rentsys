@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
-from apprtrent.views import HomeView, SignUPView, AddAppartment, AddAppartmentsPhoto, AppartmensView, \
+from apprtrent.views import HomeView, SignUPView, AddAppartment, AddAppartmentsPhoto, AppartmentsView, \
     AppartmentView, ChangeAppartment, AddOwner, AppartmentsEditList, DeleteAppartment
 
 urlpatterns = [
@@ -36,8 +36,8 @@ urlpatterns = [
     path('appartment_edit_list', AppartmentsEditList.as_view(), name="edit-list-appartment"),
     path('add_photo/<int:appartment_id>', AddAppartmentsPhoto.as_view(), name="add-photo"),
     path('add_owner', AddOwner.as_view(), name="add-owner"),
-    path('appartments/', AppartmensView.as_view(), name="appartments"),
-    path('appartments/<str:city>/', AppartmensView.as_view(), name="appartments-by-city"),
+    path('appartments/', AppartmentsView.as_view(), name="appartments"),
+    path('appartments/<str:city>/', AppartmentsView.as_view(), name="appartments-by-city"),
     # path('appartments/<str:city>/<int:distance>', AppartmensView.as_view(), name='appartments-by-city-and-distance'),
     path('appartment/<int:appartment_id>', AppartmentView.as_view(), name="appartment"),
     path('appartment/<int:appartment_id>/<str:message>', AppartmentView.as_view(), name="appartment-message"),

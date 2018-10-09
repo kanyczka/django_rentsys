@@ -70,23 +70,26 @@ class AddBookingForm(forms.ModelForm):
 
     class Meta:
         model = Booking
-        fields = ('checkin_date', 'checkout_date', 'email',)
+        fields = ('checkin_date', 'checkout_date', 'email')
         widgets = {
-            'checkin_date': forms.DateInput(attrs={'type': 'date'}),
-            'checkout_date': forms.DateInput(attrs={'type': 'date'}),
+            'checkin_date': forms.TextInput(attrs={'type': 'date'}),
+            'checkout_date': forms.TextInput(attrs={'type': 'date'}),
+        }
+        labels = {
+            'checkin_date': "Najbliższy wolny termin rezerwacji"
         }
 
     def clean(self):
         cleaned_data = super().clean()
         checkin_date = cleaned_data.get("checkin_date")
-        checkout_date = cleaned_data.get("checkout_date"),
+        checkout_date = cleaned_data.get("checkout_date")
         # if not checkin_date:
         #     msg = "Podaj prawidłową datę"
         #     self.add_error('checkin_date', msg)
         # if not checkout_date:
         #     msg = "Podaj prawidłową datę"
         #     self.add_error('checkout_date', msg)
-        #
+
         if checkin_date >= checkout_date:
             raise forms.ValidationError(
                 "Data powinna być poźniejesza niż data początku rezerwacji"
