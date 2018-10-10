@@ -15,15 +15,6 @@
           </div>
         </div>
 
-
-        <nav class="navbar navbar-light bg-light">
-            <span class="navbar-text">
-
-            <h3> Apartamenty na wynajem<h3<br>
-                <h5>Promocyjne ceny dla kursantów CodersLab! </h5>
-            </span>
-        </nav>
-
         <table>
             {% for app in appartments %}
 
@@ -36,9 +27,11 @@
                         <p></p>
                             </td>
                             <td>
-                    <nav class="navbar navbar-light bg-light">
+                    <nav class="navbar">
                     <span class="navbar-text">
-                        <a href="{% url 'appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a><br>
+                        <a href="{% url 'appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a>
+                        <h4>{{ app.address_str }}, {{ app.address_city }}</h4></span><br>
+
                         {{ app.description }}<br>
                     </span>
                     </nav>

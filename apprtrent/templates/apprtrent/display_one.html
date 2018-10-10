@@ -11,19 +11,24 @@
 </span>
 
 
-<nav class="navbar navbar-light bg-light">
+<nav class="navbar">
 
-    <span class="navbar-text">
+    <div class="container">
+      <div class="row">
 
-        <h3 class="text-body"> {{ appartment.app_name }}</h3>
-        <h5 class="text-body">{{ appartment.address_city }}, ul. {{ appartment.address_str }}</h5>
+            <div class="col"><span class="navbar-text">
 
-        <p>Cena specjalna dla kursantów Coderslab:
-            <span class="text-danger">{{ appartment.coders_weekly_price }}PLN za tydzień <br></span>
-            Cena regularna za dzień od:
-            <span>{{ appartment.day_price }}PLN</span>
-        </p>
-        <span><small>
+                <h3 class="text-body"> {{ appartment.app_name }}</h3>
+                <h5 class="text-body">{{ appartment.address_city }}, ul. {{ appartment.address_str }}</h5>
+                <p>Cena specjalna dla kursantów Coderslab:
+                        <span class="text-danger">{{ appartment.coders_weekly_price }}PLN za tydzień <br></span>
+                    Cena regularna za dzień od: <span>{{ appartment.day_price }}PLN</span></p></div>
+      </div>
+    </div>
+
+       <span><small>
+
+
         <table class="table table-bordered">
             <tbody>
                 <tr class="text-body text-center">
@@ -40,23 +45,28 @@
         </table>
         </small></span>
 
-        <table class="table table-bordered">
-            <tbody>
-                <tr class="text-body">
-                  <td>{{ appartment.description }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-    </span>
 </nav>
 
+    <div style="height:300px; width:100% ;overflow:scroll;">
     <table class="table table-striped">
-        <tr>
-             {% for photo in photos %}
-                 <td width="20%"><a href="{{ photo.path.url }}"><img width="300px" src="{{ photo.path.url }}"/></a></td>
-            {%  endfor %}
-        </tr>
+        <tbody>
+            <tr>
+
+                {% for photo in photos %}
+                     <td width="20%"><a href="{{ photo.path.url }}"><img width="300px" src="{{ photo.path.url }}"/></a></td>
+                {%  endfor %}
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr class="text-body">
+                <td>{{ appartment.description }}</td>
+            </tr>
+        </tbody>
     </table>
 
     <div class="container-fluid">
@@ -69,11 +79,12 @@
         </small></span>
     </div>
 
-    <table>
-        <tr>
-        <td width="50%">
-            <nav class="navbar navbar-light bg-light">
-                <div class="container-fluid"><h3>Rezerwacja apartamentu</h3>
+<nav class="nav flex-column">
+
+    <div class="container p-3 mb-2 bg-light text-dark"><h3>Rezerwacja apartamentu</h3>
+
+      <div class="row">
+        <div class="col-4">
 
             <form method="POST" action="" class="form">
                 {% csrf_token %}
@@ -82,24 +93,28 @@
                         <small>{{ message }}</small>
                     {% endif %}
                 </span>
+
                 {{ form|crispy }}
 
                 <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
                 <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
-            </form>
-                </div>
-            </nav>
-        </td>
-        <td width="50%">zarezerwowane dni:<br>
+            </form></div>
+
+        <div class="col-2"></div>
+
+        <div class="col"> Zarezerwowane dni:<br>
                     {% if booked_already %}
                         {% for b in booked_already %}
                         {{ b.checkin_date }} - {{ b.checkout_date }}<br>
                     {% endfor %}
                     {% else %} Ten apartament nie ma jeszcze żadnych rezerwacji.
-                    {% endif %}
-        </td>
-        </tr>
-    </table>
+                    {% endif %}</div>
+
+
+
+        </div>
+      </div>
+</nav>
 
 
 

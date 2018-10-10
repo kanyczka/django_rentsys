@@ -76,7 +76,7 @@ class AddBookingForm(forms.ModelForm):
             'checkout_date': forms.TextInput(attrs={'type': 'date'}),
         }
         labels = {
-            'checkin_date': "Najbliższy wolny termin rezerwacji"
+            'checkin_date': "Najbliższy wolny termin"
         }
 
     def clean(self):

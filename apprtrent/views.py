@@ -185,32 +185,25 @@ class AppartmentView(View):
         fees = appartment.fees.all()
         photos = appartment.photo_set.all()
         today = date.today()
-        booked_already = appartment.booking_set.filter(checkout_date__gt=date.today())
+        booked_already = appartment.booking_set.filter(checkout_date__gt=date.today()).order_by("checkin_date")
+        first_booked = today
         if booked_already:
             for b in booked_already:
                 checkin_date = b.checkin_date
                 checkout_date = b.checkout_date
-                if checkout_date - (checkout_date - checkin_date) > today:
-                    first_booked = today
-                else:
+                if checkout_date - (checkout_date - checkin_date) <= first_booked:
                     first_booked = checkout_date
-        else:
-            first_booked = today
-        # form = AddBookingForm(initial={'appartment': appartment})
         form = AddBookingForm(instance=appartment, initial={"checkin_date": first_booked})
+        no_of_photos = range(1,3)
+        # message = ""
 
         return render(request, "apprtrent/display_one.html", {"message": message, "appartment": appartment,
-                                                              "facilities": facilities,
-                                                              "fees": fees, "photos": photos,
-                                                              "booked_already": booked_already, "first_booked": first_booked,
-                                                              "today": today, "form": form})
+                                                              "facilities": facilities, "fees": fees, "photos": photos,
+                                                              "booked_already": booked_already,
+                                                              "today": today, "form": form, "no_of_photos": no_of_photos})
     def post(self, request, appartment_id, message=None):
         appartment = Appartment.objects.get(pk=appartment_id)
-        facilities = appartment.facilities.all()
-        fees = appartment.fees.all()
-        photos = appartment.photo_set.all()
         today = datetime.today().date()
-        # today = today.strftime('%Y-%m-%d')
         form = AddBookingForm(request.POST)
         if form.is_valid():
             booking = form.save(commit=False)
@@ -222,7 +215,6 @@ class AppartmentView(View):
                 message = f'Rezerwacje wstecz nie są możliwe. Wybierz wolny termin po {today}'
                 return redirect(reverse('appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
 
-            # days_booked = [checkin_date + timedelta(days=x) for x in range((checkout_date - checkin_date).days + 1)]
             #  sprawdza czy temrmin jest już zajęty, jeżeli są jakieś rezerwacje po dacie check_in
             if booked_already_after_checkin:
                 for b in booked_already_after_checkin:
@@ -243,8 +235,10 @@ class AppartmentView(View):
 
             message = "Dokonano wstępnej rezerwacji, dziękujemy"
             return redirect(reverse('appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
+
         else:
             message = "Błędna data, spróbuj ponownie"
+
         return redirect(reverse('appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
 
 
