@@ -1,0 +1,6 @@
+
+
+        {% for photo in photos %}
+            <a href="{{ photo.path.url }}"><img class="item" style="padding: 2px" height="200px" src="{{ photo.path.url }}"/></a>
+        {%  endfor %}
+

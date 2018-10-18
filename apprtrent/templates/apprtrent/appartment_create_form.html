@@ -1,17 +1,17 @@
 {% extends "apprtrent/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="container-fluid">
-        <h3>Dodawanie apartamentu</h3><br>
-    </div>
 
-<form method="POST" action="#" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
+    <h3 style="margin-top: 15px">Dodawanie apartamentu</h3><br>
 
-    <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Dodaj</button>
-    <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
-</form>
+    <form method="POST" action="#" class="form">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Dodaj</button>
+        <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
+    </form>
 
 
 {% endblock %}

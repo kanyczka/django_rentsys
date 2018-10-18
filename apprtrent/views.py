@@ -61,7 +61,7 @@ class AppartmentsEditList(View):
         return render(request, "apprtrent/appartment_edit_list.html", {"appartments": appartments, "photos": photos})
 
 
-# dodawanie apartamentu z ograniczonymi uprawnieniami
+# dodawanie apartamentu (z ograniczonymi uprawnieniami)
 class AddAppartment(PermissionRequiredMixin, View):
     permission_required = 'apprtrent.new_appartment'
 
@@ -107,9 +107,10 @@ class AddAppartmentsPhoto(View):
 
     def get(self, request, appartment_id):
         appartment = Appartment.objects.get(pk=appartment_id)
+        photos = appartment.photo_set.all()
         form = AddAppartmentPhotoForm(instance=appartment)
 
-        return render(request, "apprtrent/add_photos_form.html", {"form": form, "appartment": appartment, "button": "Dodaj zdjęcie"})
+        return render(request, "apprtrent/add_photos_form.html", {"form": form, "appartment": appartment, "photos": photos, "button": "Dodaj zdjęcie"})
 
     def post(self, request, appartment_id):
         appartment = Appartment.objects.get(pk=appartment_id)
@@ -121,33 +122,6 @@ class AddAppartmentsPhoto(View):
             # return redirect(reverse('home'))
             return redirect(reverse('add-photo', kwargs={'appartment_id': photo.appartment_id}))
         return render(request, "apprtrent/add_photos_form.html", {"form": form, "button": "Dodaj zdjęcie"})
-
-
-# pokazuje apartamenty na stronie głównej, wszystkie lub w danym mieście
-# class AppartmensViewByCodersLabDist(View):
-#     def get(self, request, city, distance=None):
-#         if distance:
-#             appartments = Appartment.objects.filter(address_city=city).filter(distance=distance)
-#         else:
-#             appartments = Appartment.objects.filter(address_city=city)
-#         cities = City.objects.all()
-#         photos = Photo.objects.all()
-#         form = SearchAppartmentsInCityCodersLabDist()
-#         return render(request, "apprtrent/display.html", {"appartments": appartments, "form": form,
-#                                                           "cities": cities, "photos": photos,
-#                                                           "city": city, "distance": distance})
-#     def post(self, request, city, distance=None):
-#         form = SearchAppartmentsInCityCodersLabDist(request.POST)
-#         city = City.objects.get(city_name=city)
-#         appartments = Appartment.objects.filter(address_city=city)
-#         if form.is_valid():
-#             distance = form.cleaned_data['distance']
-#             return redirect(reverse('appartments-by-city-and-distance', kwargs={'city': city,
-#                                                                                     'distance': distance}))
-#         else:
-#             photos = Photo.objects.all()
-#             return render(request, "apprtrent/display.html", {"appartments": appartments, "form": form,
-#                                                           "photos": photos, "city": city, "distance": distance})
 
 
 # pokazuje apartamenty na stronie głównej, wszystkie lub w danym mieście

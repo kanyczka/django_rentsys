@@ -16,6 +16,9 @@ class AddAppartmentPhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
         fields = ('path',)
+        labels = {
+            'path': "Nowe zdjęcie"
+        }
 
 
 class AddAppartmentForm(forms.ModelForm):

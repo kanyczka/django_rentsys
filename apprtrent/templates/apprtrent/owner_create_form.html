@@ -1,13 +1,12 @@
 {% extends "apprtrent/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="container-fluid">
-        <h3>Dodawanie właściciela</h3><br>
-    </div>
+    <h3 style="margin-top: 15px">Dodawanie właściciela</h3><br>
 
-<form method="POST" action="#" enctype="multipart/form-data">
+<form method="POST" action="#" class="form">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
 
     <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Dodaj</button>
     <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>

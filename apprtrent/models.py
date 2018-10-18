@@ -104,7 +104,7 @@ def app_directory_path(instance, filename):
 
 class Photo(models.Model):
     # path = models.ImageField(max_length=128, upload_to="photos/", verbose_name="zdjęcie apartamentu")
-    path = models.ImageField(max_length=128, upload_to=app_directory_path, verbose_name="zdjęcie apartamentu")
+    path = models.ImageField(max_length=128, upload_to=app_directory_path)
     appartment = models.ForeignKey(Appartment, on_delete=models.CASCADE)
 
 
