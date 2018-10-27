@@ -4,10 +4,10 @@ from datetime import date
 
 
 DISTANCE = (
-    (1, "bardzo blisko"),
+    (1, "w Centrum"),
     (2, "blisko"),
-    (3, "dojazd komunikacją miejską"),
-    (4, "dłuższy dojazd komunikacją miejską"),
+    (3, "szybki dojazd komunikacją miejską"),
+    (4, "daleko od Centrum"),
 )
 
 
@@ -81,7 +81,7 @@ class Appartment(models.Model):
     deposit = models.SmallIntegerField(default=0, verbose_name="zwrotna kaucja")
     best_app = models.BooleanField(default=True, verbose_name="wyróżniony", help_text="czy apartament ma być pokazywany na stronie głównej")
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, verbose_name="właściciel")
-    distance = models.SmallIntegerField(choices=DISTANCE, verbose_name="odległość od Coderslab")
+    distance = models.SmallIntegerField(choices=DISTANCE, verbose_name="odległość od Centrum")
 
 
     class Meta:
@@ -122,8 +122,8 @@ class Booking(models.Model):
 
 
 class Article(models.Model):
-    name = models.CharField(max_length=60, verbose_name="Nazwa artykułu")
-    article_text = models.TextField(blank=True)
+    name = models.CharField(max_length=60, verbose_name="Nazwa")
+    article_text = models.TextField(blank=True, verbose_name="Treść")
 
     def __str__(self):
         return self.name

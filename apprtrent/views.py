@@ -7,23 +7,26 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, ListView
 from datetime import date, timedelta, datetime
 from django.db import IntegrityError
 
 from apprtrent.forms import AddAppartmentPhotoForm, UserCreationForm2, AddAppartmentForm, AddBookingForm, \
-    SearchAppartmentsInCity, SearchAppartmentsInCityCodersLabDist
-from apprtrent.models import Appartment, Photo, Facility, Owner, City, Booking
+    SearchAppartmentsInCity
+from apprtrent.models import Appartment, Photo, Facility, Owner, City, Booking, Article
 
 
 # Home
 class HomeView(View):
 
     def get(self,request):
-        return redirect(reverse('appartments'))
+        return render(request, 'apprtrent/home.html')
 
 # Tworzenie nowego usera
 class SignUPView(View):
+        def get(self, request):
+            form = UserCreationForm()
+            return render(request, 'apprtrent/signup.html', {'form': form})
 
         def post(self, request):
             form = UserCreationForm2(request.POST)
@@ -33,15 +36,31 @@ class SignUPView(View):
                 raw_password = form.cleaned_data.get('password1')
                 user = authenticate(username=username, password=raw_password)
                 login(request, user)
-                return redirect('home')
-            return render(request, 'apprtrent/signup.html', {'form': form})
-        def get(self, request):
-            form = UserCreationForm()
+                return redirect(reverse('apprtrent:home'))
             return render(request, 'apprtrent/signup.html', {'form': form})
 
 
-# class AddAppartment(CreateView):
-#
+class ArticleView(DetailView):
+    model = Article
+    template_name = 'apprtrent/display_article.html'
+
+
+class ArticleEditList(ListView):
+    template_name = 'apprtrent/article_edit_list.html'
+
+    def get_queryset(self):
+        return Article.objects.all()
+
+
+class UpdateArticleView(UpdateView):
+    model = Article
+    fields = '__all__'
+    template_name_suffix ='_update_form'
+    pk_url_kwarg = "article_pk"
+    success_url = reverse_lazy('apprtrent:article-list')
+
+
+# class AddAppartment(CreateView):#
 #     model = Appartment
 #     fields = '__all__'
 #     template_name_suffix = '_create_form'       # zmienia nazwę szablonu z appartment_form na appartment_create_form
@@ -99,7 +118,7 @@ class AddOwner(CreateView):
     model = Owner
     fields = '__all__'
     template_name_suffix = '_create_form'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('apprtrent:home')
 
 
 # dodawanie zdjęć do apartamentu
@@ -119,7 +138,6 @@ class AddAppartmentsPhoto(View):
             photo = form.save(commit=False)
             photo.appartment = appartment
             photo.save()
-            # return redirect(reverse('home'))
             return redirect(reverse('add-photo', kwargs={'appartment_id': photo.appartment_id}))
         return render(request, "apprtrent/add_photos_form.html", {"form": form, "button": "Dodaj zdjęcie"})
 
@@ -168,13 +186,10 @@ class AppartmentView(View):
                 if checkout_date - (checkout_date - checkin_date) <= first_booked:
                     first_booked = checkout_date
         form = AddBookingForm(instance=appartment, initial={"checkin_date": first_booked})
-        no_of_photos = range(1,3)
-        # message = ""
-
         return render(request, "apprtrent/display_one.html", {"message": message, "appartment": appartment,
                                                               "facilities": facilities, "fees": fees, "photos": photos,
                                                               "booked_already": booked_already,
-                                                              "today": today, "form": form, "no_of_photos": no_of_photos})
+                                                              "today": today, "form": form})
     def post(self, request, appartment_id, message=None):
         appartment = Appartment.objects.get(pk=appartment_id)
         today = datetime.today().date()
@@ -201,10 +216,9 @@ class AppartmentView(View):
                         message = "Ten termin został już zarezerwowany"
                         return redirect(reverse('appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
             try:
-
                 booking.save()
             except IntegrityError:
-                message = "Ten termin jest już zarezerwowany - Integrity"
+                message = "Ten termin jest już zarezerwowany"
                 return redirect(reverse('appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
 
             message = "Dokonano wstępnej rezerwacji, dziękujemy"
@@ -222,4 +236,4 @@ class AppartmentView(View):
 
 
 
-
+# todo poprawić linki z url na 'apprtrent: urlname'

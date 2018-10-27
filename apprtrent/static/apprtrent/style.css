@@ -1,9 +1,13 @@
-.container {
-    flex-wrap: nowrap;
-}
+/*body {*/
+    /*background: white url("buildings.jpg");*/
+/*}*/
 
-.item {
-    flex-grow: 1;
-    flex-basis: auto;
-    align-self: center;
-}
+/*.container {*/
+    /*flex-wrap: nowrap;*/
+/*}*/
+
+/*.item {*/
+    /*flex-grow: 1;*/
+    /*flex-basis: auto;*/
+    /*align-self: center;*/
+/*}*/

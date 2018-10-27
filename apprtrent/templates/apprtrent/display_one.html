@@ -31,7 +31,7 @@
         <table class="table table-bordered">
             <tbody>
                 <tr class="text-body text-center">
-                  <td>do Coderslab: {{ appartment.get_distance_display }}</td>
+                  <td>lokalizacja: {{ appartment.get_distance_display }}</td>
                   <td>max osób: {{ appartment.no_of_guests }}</td>
                   <td>łóżek: {{ appartment.no_of_beds }}</td>
                   <td>pow.: {{ appartment.area }}mkw</td>
@@ -52,9 +52,9 @@
 
     <p></p>
 
-    <div class="container bg-light"> {{ appartment.description }}</div>
+    <div class="container"> {{ appartment.description }}</div>
 
-    <div class="container-fluid">
+    <div class="container">
         <span><small>
         {% for fac in facilities %}
              <ul class="list-group list-group-flush">
@@ -82,7 +82,7 @@
                 {{ form|crispy }}
 
                 <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
-                <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
+                <a class="btn btn-primary btn-sm" href="{% url 'apprtrent:appartments' %}" role="button">Anuluj</a>
             </form></div>
 
         <div class="col-2"></div>

@@ -18,7 +18,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">{{ button }}</button>
-        <a class="btn btn-primary btn-sm" href="{% url 'home' %}" role="button">Anuluj</a>
+        <a class="btn btn-primary btn-sm" href="{% url 'apprtrent:home' %}" role="button">Anuluj</a>
 
     </form>
 

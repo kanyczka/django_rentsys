@@ -12,7 +12,6 @@ class UserCreationForm2(forms2.UserCreationForm):
 
 
 class AddAppartmentPhotoForm(forms.ModelForm):
-
     class Meta:
         model = Photo
         fields = ('path',)
@@ -22,7 +21,6 @@ class AddAppartmentPhotoForm(forms.ModelForm):
 
 
 class AddAppartmentForm(forms.ModelForm):
-
     class Meta:
         model = Appartment
         fields = '__all__'

@@ -5,69 +5,46 @@
 <div class="select2-container">
     <p></p>
         <div class="d-flex bd-highlight mb-3">
-{#          <div class="p-2 bd-highlight">Flex item</div>#}
           <div class="ml-auto p-2 bd-highlight">
-
             <form method="POST" action="">
                 {% csrf_token %}
                 {{ form }} <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Szukaj</button>
             </form>
           </div>
         </div>
+</div>
 
-        <table>
-            {% for app in appartments %}
+    {% for app in appartments %}
 
-            <tr>
-                <td>
-                    <table>
-                        <tr>
-                            <td>
-                        <a href="{{ app.photo_set.first.path.url }}"><img width="250px" src="{{ app.photo_set.first.path.url }}"/></a>
-                        <p></p>
-                            </td>
-                            <td>
-                    <nav class="navbar">
-                    <span class="navbar-text">
-                        <a href="{% url 'appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a>
-                        <h4>{{ app.address_str }}, {{ app.address_city }}</h4></span><br>
+        <div class="media">
+            <a href="{{ app.photo_set.first.path.url }}">
+            <img class="align-self-center mr-3" width="300px" src="{{ app.photo_set.first.path.url }}" alt="Generic placeholder image"/></a>
+            <div class="media-body">
+                <a class="mt-0" href="{% url 'apprtrent:appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a>
+                <h5 class="mt-0">{{ app.address_str }}, {{ app.address_city }}</h5><br>
+                <p class="mb-0">{{ app.description }}</p>
 
-                        {{ app.description }}<br>
-                    </span>
-                    </nav>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="navbar navbar-light bg-light">
-                    <span><small>
-
-                    <table class="table table-bordered">
+                <span><small>
+                <p></p>
+                <table class="table table-bordered">
                     <tbody>
                         <tr class="text-center">
-                          <td>do Coderslab: {{ app.get_distance_display }}</td>
+                          <td>lokalizacja: {{ app.get_distance_display }}</td>
                           <td>max osób: {{ app.no_of_guests }}</td>
                           <td>łóżek: {{ app.no_of_beds }}</td>
                           <td>pow.: {{ app.area }}mkw</td>
                           <td>piętro: {{ app.floor }}</td>
                           <td>pokoi: {{ app.no_of_rooms }}</td>
                           <td>depozyt: {{ app.deposit }}</td>
-
-                        </tr>
+                      </tr>
                     </tbody>
-                    </table>
-                    </small></span>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
+                </table></small></span>
+            </div>
+        </div>
+        <hr>
 
-        </table>
+    {% endfor %}
 
-</div>
 
 {% endblock %}
 

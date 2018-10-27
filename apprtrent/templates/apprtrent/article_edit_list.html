@@ -1,0 +1,20 @@
+{% extends "apprtrent/base.html" %}
+
+{% block content %}
+
+<div class="select2-container">
+    <p></p>
+<h3> Lista artykułów na stronach:</h3>
+    {% for article in object_list %}
+        <table class="table table-striped">
+            <tr>
+                <td width=70%><a href="{% url 'apprtrent:article' article.pk %}">{{ article.name }}</a></td>
+                <td width=10%><a class="btn btn-primary btn-sm" href="{% url 'apprtrent:update-article' article.pk %}" role="button">Edytuj</a></td>
+{#                <td width=10%><a class="btn btn-danger btn-sm" href="{% url 'apprtrent:delete-article' art.pk %}" role="button">Usuń</a></td>#}
+            </tr>
+</table>
+
+    {% endfor %}
+</div>
+
+{% endblock %}

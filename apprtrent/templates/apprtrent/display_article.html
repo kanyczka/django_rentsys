@@ -1,0 +1,19 @@
+{% extends "apprtrent/base.html" %}
+
+{% block content %}
+
+
+        <div class="container">
+            <p></p>
+            <h5 class="mt-0">{{ article.name|title }}</h5>
+            <hr>
+
+            <div class="row show-grid">
+                <div class="col-md-7">
+                    <p class="">{{ article.article_text }}</p>
+                </div>
+            </div>
+        </div>
+            <hr>
+
+{% endblock %}
