@@ -202,7 +202,7 @@ class AppartmentView(View):
             checkout_date = booking.checkout_date
             if checkin_date < today:
                 message = f'Rezerwacje wstecz nie są możliwe. Wybierz wolny termin po {today}'
-                return redirect(reverse('appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
+                return redirect(reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
 
             #  sprawdza czy temrmin jest już zajęty, jeżeli są jakieś rezerwacje po dacie check_in
             if booked_already_after_checkin:
@@ -214,20 +214,20 @@ class AppartmentView(View):
                         checkin_date >= date_in and checkin_date <= date_out or \
                         checkin_date <= date_in and checkout_date >= date_out:
                         message = "Ten termin został już zarezerwowany"
-                        return redirect(reverse('appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
+                        return redirect(reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
             try:
                 booking.save()
             except IntegrityError:
                 message = "Ten termin jest już zarezerwowany"
-                return redirect(reverse('appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
+                return redirect(reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
 
             message = "Dokonano wstępnej rezerwacji, dziękujemy"
-            return redirect(reverse('appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
+            return redirect(reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
 
         else:
             message = "Błędna data, spróbuj ponownie"
 
-        return redirect(reverse('appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
+        return redirect(reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
 
 
 

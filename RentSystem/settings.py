@@ -132,7 +132,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/photos/'
 LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/rentlab/'
+LOGOUT_REDIRECT_URL = '/rentlab/'
 MEDIA_ROOT = 'media/'
 
