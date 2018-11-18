@@ -88,7 +88,7 @@ class Appartment(models.Model):
         ordering = ['address_city', 'app_name']
         permissions = (
             ("new_appartment", "Can add new appartment"),
-            # ("change_appartment", "Can change appartment"),
+            ("modify_appartment", "Can change appartment"),
             # ("delete_appartment", "Can delete appartment"),
 
             )

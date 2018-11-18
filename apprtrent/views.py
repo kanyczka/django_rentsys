@@ -19,25 +19,26 @@ from apprtrent.models import Appartment, Photo, Facility, Owner, City, Booking, 
 # Home
 class HomeView(View):
 
-    def get(self,request):
+    def get(self, request):
         return render(request, 'apprtrent/home.html')
+
 
 # Tworzenie nowego usera
 class SignUPView(View):
-        def get(self, request):
-            form = UserCreationForm()
-            return render(request, 'apprtrent/signup.html', {'form': form})
+    def get(self, request):
+        form = UserCreationForm()
+        return render(request, 'apprtrent/signup.html', {'form': form})
 
-        def post(self, request):
-            form = UserCreationForm2(request.POST)
-            if form.is_valid():
-                form.save()
-                username = form.cleaned_data.get('username')
-                raw_password = form.cleaned_data.get('password1')
-                user = authenticate(username=username, password=raw_password)
-                login(request, user)
-                return redirect(reverse('apprtrent:home'))
-            return render(request, 'apprtrent/signup.html', {'form': form})
+    def post(self, request):
+        form = UserCreationForm2(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect(reverse('apprtrent:home'))
+        return render(request, 'apprtrent/signup.html', {'form': form})
 
 
 class ArticleView(DetailView):
@@ -55,7 +56,7 @@ class ArticleEditList(ListView):
 class UpdateArticleView(UpdateView):
     model = Article
     fields = '__all__'
-    template_name_suffix ='_update_form'
+    template_name_suffix = '_update_form'
     pk_url_kwarg = "article_pk"
     success_url = reverse_lazy('apprtrent:article-list')
 
@@ -87,6 +88,7 @@ class AddAppartment(PermissionRequiredMixin, View):
     def get(self, request):
         form = AddAppartmentForm()
         return render(request, "apprtrent/appartment_create_form.html", {"form": form})
+
     def post(self, request):
         form = AddAppartmentForm(request.POST)
         if form.is_valid():
@@ -96,17 +98,19 @@ class AddAppartment(PermissionRequiredMixin, View):
 
 
 # edycja i zmiana danych w apartamentcie
-class ChangeAppartment(UpdateView):
+class ChangeAppartment(PermissionRequiredMixin, UpdateView):
+    permission_required = 'apprtrent.change_appartment'
 
     model = Appartment
     fields = '__all__'
-    template_name_suffix ='_update_form'
+    template_name_suffix = '_update_form'
     pk_url_kwarg = 'appartment_pk'
     success_url = reverse_lazy('edit-list-appartment')
 
 
 # usuwanie apartamentu
-class DeleteAppartment(DeleteView):
+class DeleteAppartment(PermissionRequiredMixin, DeleteView):
+    permission_required = 'apprtrent.delete_appartment'
 
     model = Appartment
     pk_url_kwarg = 'appartment_pk'
@@ -114,7 +118,9 @@ class DeleteAppartment(DeleteView):
 
 
 # dodawanie właściciela
-class AddOwner(CreateView):
+class AddOwner(PermissionRequiredMixin, CreateView):
+    permission_required = 'apprtrent.add_owner'
+
     model = Owner
     fields = '__all__'
     template_name_suffix = '_create_form'
@@ -129,7 +135,8 @@ class AddAppartmentsPhoto(View):
         photos = appartment.photo_set.all()
         form = AddAppartmentPhotoForm(instance=appartment)
 
-        return render(request, "apprtrent/add_photos_form.html", {"form": form, "appartment": appartment, "photos": photos, "button": "Dodaj zdjęcie"})
+        return render(request, "apprtrent/add_photos_form.html",
+                      {"form": form, "appartment": appartment, "photos": photos, "button": "Dodaj zdjęcie"})
 
     def post(self, request, appartment_id):
         appartment = Appartment.objects.get(pk=appartment_id)
@@ -155,6 +162,7 @@ class AppartmentsView(View):
         form = SearchAppartmentsInCity()
         return render(request, "apprtrent/display.html", {"appartments": appartments, "form": form,
                                                           "cities": cities, "photos": photos})
+
     def post(self, request, city=None):
         form = SearchAppartmentsInCity(request.POST)
         appartments = Appartment.objects.all()
@@ -190,6 +198,7 @@ class AppartmentView(View):
                                                               "facilities": facilities, "fees": fees, "photos": photos,
                                                               "booked_already": booked_already,
                                                               "today": today, "form": form})
+
     def post(self, request, appartment_id, message=None):
         appartment = Appartment.objects.get(pk=appartment_id)
         today = datetime.today().date()
@@ -202,7 +211,8 @@ class AppartmentView(View):
             checkout_date = booking.checkout_date
             if checkin_date < today:
                 message = f'Rezerwacje wstecz nie są możliwe. Wybierz wolny termin po {today}'
-                return redirect(reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
+                return redirect(reverse('apprtrent:appartment-message',
+                                        kwargs={'appartment_id': appartment_id, 'message': message}))
 
             #  sprawdza czy temrmin jest już zajęty, jeżeli są jakieś rezerwacje po dacie check_in
             if booked_already_after_checkin:
@@ -210,30 +220,27 @@ class AppartmentView(View):
                     date_in = b.checkin_date
                     date_out = b.checkout_date
                     if checkin_date <= date_in and checkout_date > date_in and checkout_date < date_out or \
-                        checkin_date >= date_in and checkout_date <= date_out or \
-                        checkin_date >= date_in and checkin_date <= date_out or \
-                        checkin_date <= date_in and checkout_date >= date_out:
+                            checkin_date >= date_in and checkout_date <= date_out or \
+                            checkin_date >= date_in and checkin_date <= date_out or \
+                            checkin_date <= date_in and checkout_date >= date_out:
                         message = "Ten termin został już zarezerwowany"
-                        return redirect(reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
+                        return redirect(reverse('apprtrent:appartment-message',
+                                                kwargs={'appartment_id': appartment_id, 'message': message}))
             try:
                 booking.save()
             except IntegrityError:
                 message = "Ten termin jest już zarezerwowany"
-                return redirect(reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
+                return redirect(reverse('apprtrent:appartment-message',
+                                        kwargs={'appartment_id': appartment_id, 'message': message}))
 
             message = "Dokonano wstępnej rezerwacji, dziękujemy"
-            return redirect(reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
+            return redirect(
+                reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
 
         else:
             message = "Błędna data, spróbuj ponownie"
 
-        return redirect(reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
-
-
-
-
-
-
-
+        return redirect(
+            reverse('apprtrent:appartment-message', kwargs={'appartment_id': appartment_id, 'message': message}))
 
 # todo poprawić linki z url na 'apprtrent: urlname'

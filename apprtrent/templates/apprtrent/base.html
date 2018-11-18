@@ -24,7 +24,8 @@
           </button>
 
             {% include "apprtrent/menu.html" %}
-            {% if request.user.is_superuser %}
+{#            {% if request.user.is_superuser %}#}
+            {%  if request.user.is_authenticated %}
             {% include "apprtrent/menu_manage.html" %}
             {% endif %}
 
