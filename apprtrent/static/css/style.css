@@ -1,0 +1,61 @@
+.main {
+    height: 100%;
+    background: url("../apprtrent/sofa.jpg");
+    background-size: cover;
+
+}
+
+html {
+  background: url("../apprtrent/sofa.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.jumbotron {
+    background: url("../apprtrent/sofa.jpg");
+    background-size: cover;
+    background-blend-mode: lighten;
+    color: darkred;
+    height: available;
+
+}
+
+.info-home {
+    padding: 15px;
+    font-family: 'Lobster', cursive;
+}
+
+.info-title {
+    margin-top: 15px
+}
+
+.appartment-info {
+    background: lightgrey;
+    text-decoration: none;
+}
+
+.app-description {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.cena {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: red;
+    font-size: 1em;
+
+}
+
+.container {
+    flex-wrap: nowrap;
+}
+
+.item {
+    flex-grow: 1;
+    flex-basis: auto;
+    align-self: center;
+}

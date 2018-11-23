@@ -1,25 +1,11 @@
 {% extends "apprtrent/base.html" %}
-
 {% block content %}
 
-    <div class="container" style="height: 200px; background: whitesmoke">
-    <hr>
-        <div class="row justify-content-md-center">
-            <div class="col-md-auto">
-                <h3 style="text-align: center; color: dimgray">APARTAMENTY NA WYNAJEM</h3>
-                    <p></p>
-            </div>
-{#                <img class="item" src="static/apprtrent/building.jpg">#}
-        </div>
-        <div class="row justify-content-md-center">
-            <div class="col-md-auto">
-            <h4 style="text-align: center; color: dimgray">DUŻY WYBÓR, <br>
-                SZYBKA REZERWACJA</h4><p></p>
-                <h5>Sprawdź dostępne <a href="{% url 'apprtrent:appartments' %}">apartamenty</a></h5>
-            </div>
-        </div>
+    <div class="container">
+        <h5 class="info-home">System rezerwacji apartamentów<br>
+        Dobra lokalizacja, wygodne wnętrzna, atrakcyjne ceny.<br>
+        Sprawdź dostępne <a href="{% url 'apprtrent:appartments' %}">apartamenty</a></h5>
     </div>
-
 {% endblock %}
 
 

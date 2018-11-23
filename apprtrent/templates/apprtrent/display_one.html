@@ -3,105 +3,98 @@
 
 
 {% block content %}
-<span class="text-danger">
 
-    {% if message %}
-        <small>{{ message }}</small>
-    {% endif %}
-</span>
+    <div class="container appartment-info">
+{#            <nav class="nav flex-column" style="">#}
+                <div class="container p-3 mb-2 bg-light text-dark">
+                    <h3>Rezerwacja apartamentu</h3>
+
+                    <div class="row">
+                        <div class="col-4">
+
+                            <form method="POST" action="" class="form">
+                                {% csrf_token %}
+                                <span class="text-danger">
+                                    {% if message %}
+                                        <small>{{ message }}</small>
+                                    {% endif %}
+                                </span>
+
+                                {{ form|crispy }}
+
+                                <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
+                                <a class="btn btn-primary btn-sm" href="{% url 'apprtrent:appartments' %}" role="button">Anuluj</a>
+                            </form></div>
+
+                    <div class="col-2"></div>
+
+                    <div class="col"> Zarezerwowane dni:<br>
+                        {% if booked_already %}
+                            {% for b in booked_already %}
+                            {{ b.checkin_date }} - {{ b.checkout_date }}<br>
+                        {% endfor %}
+                        {% else %} Ten apartament nie ma jeszcze żadnych rezerwacji.
+                        {% endif %}</div>
+
+                    </div>
+                  </div>
+{#        </nav>#}
 
 
-<nav class="navbar">
+        <span class="text-danger">
+            {% if message %}
+                <small>{{ message }}</small>
+            {% endif %}
+        </span>
+            <nav class="navbar">
+                <div class="container">
+                    <div class="row">
+                        <div class="col"><span class="navbar-text">
+                            <h3 class="text-body"> {{ appartment.app_name }}</h3>
+                            <h5 class="text-body">ul. {{ appartment.address_str }}, {{ appartment.address_city }}</h5>
+{#                            <p>Cena specjalna dla kursantów Coderslab:#}
+{#                                    <span class="text-danger">{{ appartment.coders_weekly_price }}PLN za tydzień <br></span>#}
+                        </div>
+                    </div>
+                </div>
 
-    <div class="container">
-      <div class="row">
+               <span><small>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr class="text-body text-center">
+                              <td>lokalizacja: {{ appartment.get_distance_display }}</td>
+                              <td>max osób: {{ appartment.no_of_guests }}</td>
+                              <td>łóżek: {{ appartment.no_of_beds }}</td>
+                              <td>pow.: {{ appartment.area }}mkw</td>
+                              <td>piętro: {{ appartment.floor }}</td>
+                              <td>pokoi: {{ appartment.no_of_rooms }}</td>
+                              <td>depozyt: {{ appartment.deposit }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </small></span>
+                <div class="container">
+                <h6 class="cena">Cena od: <span>{{ appartment.day_price }} PLN/dzień</span></h6>
+                </div>
+            </nav>
 
-            <div class="col"><span class="navbar-text">
+            <div class="container">
+                {% include "apprtrent/display_photos.html" %}
+            </div>
 
-                <h3 class="text-body"> {{ appartment.app_name }}</h3>
-                <h5 class="text-body">{{ appartment.address_city }}, ul. {{ appartment.address_str }}</h5>
-                <p>Cena specjalna dla kursantów Coderslab:
-                        <span class="text-danger">{{ appartment.coders_weekly_price }}PLN za tydzień <br></span>
-                    Cena regularna za dzień od: <span>{{ appartment.day_price }}PLN</span></p></div>
-      </div>
+            <div class="container app-description"> {{ appartment.description }}</div>
+
+            <div class="container">
+                <span><small>
+                {% for fac in facilities %}
+                     <ul class="list-group list-group-flush">
+                        <li class="list-group-item" style="background-color: lightgrey">{{ fac.name }}</li>
+                    </ul>
+                {% endfor %}<br>
+                </small></span>
+            </div>
+
     </div>
-
-       <span><small>
-
-        <table class="table table-bordered">
-            <tbody>
-                <tr class="text-body text-center">
-                  <td>lokalizacja: {{ appartment.get_distance_display }}</td>
-                  <td>max osób: {{ appartment.no_of_guests }}</td>
-                  <td>łóżek: {{ appartment.no_of_beds }}</td>
-                  <td>pow.: {{ appartment.area }}mkw</td>
-                  <td>piętro: {{ appartment.floor }}</td>
-                  <td>pokoi: {{ appartment.no_of_rooms }}</td>
-                  <td>depozyt: {{ appartment.deposit }}</td>
-
-                </tr>
-            </tbody>
-        </table>
-        </small></span>
-
-</nav>
-    <div class="container">
-
-    {% include "apprtrent/display_photos.html" %}
-    </div>
-
-    <p></p>
-
-    <div class="container"> {{ appartment.description }}</div>
-
-    <div class="container">
-        <span><small>
-        {% for fac in facilities %}
-             <ul class="list-group list-group-flush">
-                <li class="list-group-item">{{ fac.name }}</li>
-            </ul>
-        {% endfor %}<br>
-        </small></span>
-    </div>
-
-<nav class="nav flex-column">
-
-    <div class="container p-3 mb-2 bg-light text-dark"><h3>Rezerwacja apartamentu</h3>
-
-      <div class="row">
-        <div class="col-4">
-
-            <form method="POST" action="" class="form">
-                {% csrf_token %}
-                <span class="text-danger">
-                    {% if message %}
-                        <small>{{ message }}</small>
-                    {% endif %}
-                </span>
-
-                {{ form|crispy }}
-
-                <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Rezerwuj</button>
-                <a class="btn btn-primary btn-sm" href="{% url 'apprtrent:appartments' %}" role="button">Anuluj</a>
-            </form></div>
-
-        <div class="col-2"></div>
-
-        <div class="col"> Zarezerwowane dni:<br>
-                    {% if booked_already %}
-                        {% for b in booked_already %}
-                        {{ b.checkin_date }} - {{ b.checkout_date }}<br>
-                    {% endfor %}
-                    {% else %} Ten apartament nie ma jeszcze żadnych rezerwacji.
-                    {% endif %}</div>
-
-
-
-        </div>
-      </div>
-</nav>
-
-
 
 {% endblock %}
 

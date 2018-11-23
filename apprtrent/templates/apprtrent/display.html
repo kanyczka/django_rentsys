@@ -1,50 +1,54 @@
 {% extends "apprtrent/base.html" %}
-
 {% block content %}
 
-<div class="select2-container">
-    <p></p>
-        <div class="d-flex bd-highlight mb-3">
-          <div class="ml-auto p-2 bd-highlight">
-            <form method="POST" action="">
-                {% csrf_token %}
-                {{ form }} <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Szukaj</button>
-            </form>
-          </div>
+    <div class="container appartment-info">
+
+        <div class="select2-container">
+                <div class="d-flex bd-highlight mb-3">
+                  <div class="ml-auto p-2 bd-highlight">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        {{ form }} <button class="btn btn-primary btn-sm" type="submit" role="button" value="Ok">Szukaj</button>
+                    </form>
+                  </div>
+                </div>
         </div>
-</div>
+        <nav class="navbar">
 
-    {% for app in appartments %}
+            {% for app in appartments %}
 
-        <div class="media">
-            <a href="{{ app.photo_set.first.path.url }}">
-            <img class="align-self-center mr-3" width="300px" src="{{ app.photo_set.first.path.url }}" alt="Generic placeholder image"/></a>
-            <div class="media-body">
-                <a class="mt-0" href="{% url 'apprtrent:appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a>
-                <h5 class="mt-0">{{ app.address_str }}, {{ app.address_city }}</h5><br>
-                <p class="mb-0">{{ app.description }}</p>
+                <div class="media">
+                    <a href="{{ app.photo_set.first.path.url }}">
+                    <img class="align-self-center mr-3" width="300px" src="{{ app.photo_set.first.path.url }}" alt="Generic placeholder image"/></a>
+                    <div class="media-body">
+                        <a class="mt-0" href="{% url 'apprtrent:appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a>
+                        <h5 class="mt-0">{{ app.address_str }}, {{ app.address_city }}</h5><br>
+                        <p class="mb-0">{{ app.description }}</p>
 
-                <span><small>
-                <p></p>
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr class="text-center">
-                          <td>lokalizacja: {{ app.get_distance_display }}</td>
-                          <td>max osób: {{ app.no_of_guests }}</td>
-                          <td>łóżek: {{ app.no_of_beds }}</td>
-                          <td>pow.: {{ app.area }}mkw</td>
-                          <td>piętro: {{ app.floor }}</td>
-                          <td>pokoi: {{ app.no_of_rooms }}</td>
-                          <td>depozyt: {{ app.deposit }}</td>
-                      </tr>
-                    </tbody>
-                </table></small></span>
-            </div>
-        </div>
-        <hr>
+                        <span><small>
+                        <p></p>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr class="text-center">
+                                  <td>lokalizacja: {{ app.get_distance_display }}</td>
+                                  <td>max osób: {{ app.no_of_guests }}</td>
+                                  <td>łóżek: {{ app.no_of_beds }}</td>
+                                  <td>pow.: {{ app.area }}mkw</td>
+                                  <td>piętro: {{ app.floor }}</td>
+                                  <td>pokoi: {{ app.no_of_rooms }}</td>
+                                  <td>depozyt: {{ app.deposit }}</td>
+                              </tr>
+                            </tbody>
+                        </table></small></span>
+                    </div>
+                </div>
+                <hr>
 
-    {% endfor %}
+            {% endfor %}
 
+        </nav>
+
+    </div>
 
 {% endblock %}
 
