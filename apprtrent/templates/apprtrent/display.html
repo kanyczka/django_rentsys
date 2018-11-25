@@ -17,16 +17,17 @@
 
             {% for app in appartments %}
 
-                <div class="media">
-                    <a href="{{ app.photo_set.first.path.url }}">
-                    <img class="align-self-center mr-3" width="300px" src="{{ app.photo_set.first.path.url }}" alt="Generic placeholder image"/></a>
+            <ul class="media-list">
+                <li class="media">
+                    <div class="media-left">
+                        <a href="{{ app.photo_set.first.path.url }}">
+                        <img class="align-self-center mr-3" width="300px" src="{{ app.photo_set.first.path.url }}" alt="Generic placeholder image"/></a>
+                    </div>
                     <div class="media-body">
-                        <a class="mt-0" href="{% url 'apprtrent:appartment' app.pk %}"><h4>{{ app.app_name }}</h4></a>
+                        <a class="mt-0" href="{% url 'apprtrent:appartment' app.pk %}"><h4 class="media-heading">{{ app.app_name }}</h4></a>
                         <h5 class="mt-0">{{ app.address_str }}, {{ app.address_city }}</h5><br>
                         <p class="mb-0">{{ app.description }}</p>
-
-                        <span><small>
-                        <p></p>
+                        <span><small><p></p>
                         <table class="table table-bordered">
                             <tbody>
                                 <tr class="text-center">
@@ -39,9 +40,41 @@
                                   <td>depozyt: {{ app.deposit }}</td>
                               </tr>
                             </tbody>
-                        </table></small></span>
+                        </table>
+                        </small></span>
                     </div>
-                </div>
+                </li>
+            </ul>
+
+
+
+
+{#                <div class="media">#}
+{#                    <div class="media-left">#}
+{#                        <a href="{{ app.photo_set.first.path.url }}">#}
+{#                        <img class="align-self-center mr-3" width="300px" src="{{ app.photo_set.first.path.url }}" alt="Generic placeholder image"/></a>#}
+{#                    </div>#}
+{#                    <div class="media-body">#}
+{#                        <a class="mt-0" href="{% url 'apprtrent:appartment' app.pk %}"><h4 class="media-heading">{{ app.app_name }}</h4></a>#}
+{#                        <h5 class="mt-0">{{ app.address_str }}, {{ app.address_city }}</h5><br>#}
+{#                        <p class="mb-0">{{ app.description }}</p>#}
+{#                        <span><small><p></p>#}
+{#                        <table class="table table-bordered">#}
+{#                            <tbody>#}
+{#                                <tr class="text-center">#}
+{#                                  <td>lokalizacja: {{ app.get_distance_display }}</td>#}
+{#                                  <td>max osób: {{ app.no_of_guests }}</td>#}
+{#                                  <td>łóżek: {{ app.no_of_beds }}</td>#}
+{#                                  <td>pow.: {{ app.area }}mkw</td>#}
+{#                                  <td>piętro: {{ app.floor }}</td>#}
+{#                                  <td>pokoi: {{ app.no_of_rooms }}</td>#}
+{#                                  <td>depozyt: {{ app.deposit }}</td>#}
+{#                              </tr>#}
+{#                            </tbody>#}
+{#                        </table>#}
+{#                        </small></span>#}
+{#                    </div>#}
+{#                </div>#}
                 <hr>
 
             {% endfor %}

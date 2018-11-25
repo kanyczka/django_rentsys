@@ -170,7 +170,7 @@ class AppartmentsView(View):
         photos = Photo.objects.all()
         if form.is_valid():
             city = form.cleaned_data['address_city']
-            return redirect(reverse('appartments-by-city', kwargs={'city': city}))
+            return redirect(reverse('apprtrent:appartments-by-city', kwargs={'city': city}))
         return render(request, "apprtrent/display.html", {"appartments": appartments, "form": form,
                                                           "cities": cities, "photos": photos})
 
