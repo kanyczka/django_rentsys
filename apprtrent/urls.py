@@ -10,7 +10,6 @@ from apprtrent.views import HomeView, SignUPView, AddAppartment, AddAppartmentsP
 
 app_name = 'apprtrent'
 urlpatterns = [
-    # path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name="home"),
     path('login/', auth_views.LoginView.as_view(), name="login"),
     path('logout/', auth_views.LogoutView.as_view(), {'next_page': '/'}, name="logout"),
