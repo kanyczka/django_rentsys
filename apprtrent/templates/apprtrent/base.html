@@ -17,29 +17,25 @@
 
     <body>
 
-{#        <nav class="navbar navbar-dark bg-dark"><a class="navbar-brand" href="{% url 'apprtrent:home' %}">RentLab</a>#}
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark"><a class="navbar-brand" href="{% url 'apprtrent:home' %}">RentLab</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
 
             {% include "apprtrent/menu.html" %}
-{#            {% if request.user.is_superuser %}#}
-            {%  if request.user.is_authenticated %}
+            {% if request.user.is_authenticated %}
             {% include "apprtrent/menu_manage.html" %}
             {% endif %}
 
 
-            {% if request.user.is_authenticated %} <p class="text-warning"><small>Zalogowany: {{ request.user }} |
+            {% if request.user.is_authenticated %} <span class="text-warning"><small>Zalogowany: {{ request.user }} |
                 <a href="{% url 'apprtrent:logout' %}"> Wyloguj się</a>
             {% else %}
                 <a href="{% url 'apprtrent:login' %}">Logowanie</a> / <a href="{% url 'apprtrent:signup' %}">Rejestracja</a>
             {% endif %}
-            </small></p>
+            </small></span>
 
     </nav>
-{#        <div class="container">#}
-
             {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
@@ -55,7 +51,6 @@
 
         {% block content %}
         {% endblock %}
-{#    </div>#}
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
