@@ -4,7 +4,8 @@ is a short term www rental system for appartments.
 It is my first Python/Django project after I finished python bootcamp.
 It still needs couple of corrections :)
 
-Home page:
+Home page:<br>
+
 <img src="home_s.png">
 
 The purpose of the application is to enable customers to book an appartment in a given city.
