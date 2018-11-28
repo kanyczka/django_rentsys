@@ -17,7 +17,7 @@ from apprtrent.models import Appartment, Photo, Facility, Owner, City, Booking, 
 
 
 # Home
-class HomeView(View):
+class Home(View):
 
     def get(self, request):
         return render(request, 'apprtrent/home.html')

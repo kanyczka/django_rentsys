@@ -1,5 +1,4 @@
 {% extends 'apprtrent/base.html' %}
-{% load crispy_forms_tags %}
 
 {% block content %}
 
@@ -19,10 +18,10 @@
             {% for error in field.errors %}
               <p style="color: red">{{ error }}</p>
             {% endfor %}
-          </p>
         {% endfor %}
         <button type="submit">Zarejestruj się</button>
       </form>
     </div>
+    <hr>
 
 {% endblock %}

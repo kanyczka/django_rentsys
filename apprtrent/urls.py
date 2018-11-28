@@ -1,18 +1,17 @@
-from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
-from apprtrent.views import HomeView, SignUPView, AddAppartment, AddAppartmentsPhoto, AppartmentsView, \
+from apprtrent.views import Home, SignUPView, AddAppartment, AddAppartmentsPhoto, AppartmentsView, \
     AppartmentView, ChangeAppartment, AddOwner, AppartmentsEditList, DeleteAppartment, \
     UpdateArticleView, ArticleEditList, ArticleView
 
 app_name = 'apprtrent'
 urlpatterns = [
-    path('', HomeView.as_view(), name="home"),
+    path('', Home.as_view(), name="home"),
     path('login/', auth_views.LoginView.as_view(), name="login"),
-    path('logout/', auth_views.LogoutView.as_view(), {'next_page': '/'}, name="logout"),
+    path('logout/', auth_views.LogoutView.as_view(), {'next_page': ''}, name="logout"),
     path('signup/', SignUPView.as_view(), name="signup"),
 
     path('add_appartment/', AddAppartment.as_view(), name="add-appartment"),

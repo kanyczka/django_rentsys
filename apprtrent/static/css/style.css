@@ -1,30 +1,31 @@
 .main {
     height: 100%;
-    background: url("../apprtrent/sofa.jpg");
+    background-image: url("../apprtrent/mainpic.jpg");
     background-size: cover;
-
 }
 
 html {
-  background: url("../apprtrent/sofa.jpg") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-
-.jumbotron {
-    background: url("../apprtrent/sofa.jpg");
+    background: url("../apprtrent/mainpic.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
-    background-blend-mode: lighten;
-    color: darkred;
-    height: available;
-
 }
+
+
+/*.jumbotron {*/
+    /*background: url("../apprtrent/mainpic.jpg");*/
+    /*background-size: cover;*/
+    /*background-blend-mode: lighten;*/
+    /*color: darkred;*/
+    /*height: available;*/
+
+/*}*/
 
 .info-home {
     padding: 15px;
-    font-family: 'Lobster', cursive;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 12px;
 }
 
 .info-title {
