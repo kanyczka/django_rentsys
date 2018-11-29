@@ -77,7 +77,7 @@ class Appartment(models.Model):
     facilities = models.ManyToManyField(Facility, verbose_name="udogodnienia/wyposażenie")
     fees = models.ManyToManyField(Fee, verbose_name="dodatkowe opłaty")
     day_price = models.DecimalField(max_digits=6, default=200.00, decimal_places=2, verbose_name="Cena za dzień")
-    coders_weekly_price = models.DecimalField(max_digits=6, default=400.00, decimal_places=2, blank=True, null=True, verbose_name="Cena tygodniowego wynajmu dla kursantów Coderslab")
+    special_weekly_price = models.DecimalField(max_digits=6, default=400.00, decimal_places=2, blank=True, null=True, verbose_name="Cena specjalna za tydzień wynajmu")
     deposit = models.SmallIntegerField(default=0, verbose_name="zwrotna kaucja")
     best_app = models.BooleanField(default=True, verbose_name="wyróżniony", help_text="czy apartament ma być pokazywany na stronie głównej")
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE, verbose_name="właściciel")

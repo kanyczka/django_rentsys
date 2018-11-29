@@ -5,10 +5,9 @@ from apprtrent.models import Photo, User, Appartment, Owner, Booking, City
 from django.contrib.auth import forms as forms2
 
 
-
 class UserCreationForm2(forms2.UserCreationForm):
-   class Meta(forms2.UserCreationForm.Meta):
-       model = User
+    class Meta(forms2.UserCreationForm.Meta):
+        model = User
 
 
 class AddAppartmentPhotoForm(forms.ModelForm):
@@ -31,7 +30,6 @@ class AddAppartmentForm(forms.ModelForm):
 
 
 class SearchAppartmentsInCity(forms.ModelForm):
-
     class Meta:
         model = Appartment
         fields = ('address_city',)
@@ -39,36 +37,23 @@ class SearchAppartmentsInCity(forms.ModelForm):
             'address_city': 'Wybierz miasto ',
         }
 
-class SearchAppartmentsInCityCodersLabDist(forms.ModelForm):
 
+class SearchAppartmentsInCityCodersLabDist(forms.ModelForm):
     class Meta:
         model = Appartment
         fields = ('distance', 'address_city',)
         widgets = {
-            'address_city' :forms.HiddenInput
+            'address_city': forms.HiddenInput
         }
 
 
-
-
-
-
-
 class AddOwnerForm(forms.ModelForm):
-
     class Meta:
         model = Owner
         fields = '__all__'
 
 
 class AddBookingForm(forms.ModelForm):
-
-    # checkin_date = forms.DateField(required=True, input_formats='%d.%m.%Y', widget=forms.DateInput(format = '%d.%m.%Y'))
-    # checkout_date = forms.DateField(required=True, input_formats='%d.%m.%Y',widget=forms.DateInput(format = '%d.%m.%Y'))
-    # email = forms.EmailField(required=True)
-    # appartment = forms.ChoiceField()
-
-
     class Meta:
         model = Booking
         fields = ('checkin_date', 'checkout_date', 'email')
@@ -94,5 +79,5 @@ class AddBookingForm(forms.ModelForm):
         if checkin_date >= checkout_date:
             raise forms.ValidationError(
                 "Data powinna być poźniejesza niż data początku rezerwacji"
-                )
+            )
         return cleaned_data
