@@ -1,25 +1,40 @@
+body, html {
+    height: 100%
+}
+
+.bg {
+  background-image: url("../apprtrent/mainpic.jpg");
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .main {
     height: 100%;
     background-image: url("../apprtrent/mainpic.jpg");
     background-size: cover;
 }
 
-html {
-    background: url("../apprtrent/mainpic.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
 
-/*.jumbotron {*/
-    /*background: url("../apprtrent/mainpic.jpg");*/
+/*.bg_article {*/
+    /*background: url("../apprtrent/mainpic.jpg") no-repeat center center fixed;*/
+    /*-webkit-background-size: cover;*/
+    /*-moz-background-size: cover;*/
+    /*-o-background-size: cover;*/
     /*background-size: cover;*/
-    /*background-blend-mode: lighten;*/
-    /*color: darkred;*/
-    /*height: available;*/
-
 /*}*/
+
+.jumbotron {
+    background: url("../apprtrent/mainpic.jpg");
+    background-size: cover;
+    background-blend-mode: lighten;
+    color: darkred;
+    height: available;
+
+}
 
 .info-home {
     padding: 15px;

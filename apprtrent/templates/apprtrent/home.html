@@ -1,10 +1,12 @@
 {% extends "apprtrent/base.html" %}
 {% block content %}
 
-    <div class="container">
-        <h5 class="info-home">System rezerwacji apartamentów<br>
-        Dobra lokalizacja, wygodne wnętrzna, atrakcyjne ceny<br>
-        Sprawdź dostępne <a href="{% url 'apprtrent:appartments' %}" style="color: green">apartamenty</a></h5>
+    <div class="bg">
+        <div class="container">
+            <h5 class="info-home">System rezerwacji apartamentów<br>
+            Dobra lokalizacja, wygodne wnętrzna, atrakcyjne ceny<br>
+            Sprawdź dostępne <a href="{% url 'apprtrent:appartments' %}" style="color: green">apartamenty</a></h5>
+        </div>
     </div>
 {% endblock %}
 

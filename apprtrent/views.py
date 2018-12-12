@@ -10,6 +10,7 @@ from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, ListView
 from datetime import date, datetime
 from django.db import IntegrityError
+from django.core.exceptions import PermissionDenied
 
 from apprtrent.forms import AddAppartmentPhotoForm, UserCreationForm2, AddAppartmentForm, AddBookingForm, \
     SearchAppartmentsInCity
@@ -61,18 +62,6 @@ class UpdateArticleView(UpdateView):
     success_url = reverse_lazy('apprtrent:article-list')
 
 
-# class AddAppartment(CreateView):#
-#     model = Appartment
-#     fields = '__all__'
-#     template_name_suffix = '_create_form'       # zmienia nazwę szablonu z appartment_form na appartment_create_form
-#     success_url = reverse_lazy('display')
-#
-#     def form_valid(self, form):
-#         self.object = form.save()
-#         self.success_url = reverse('add-photo', args=[self.object.id])
-#         return super().form_valid(form)
-
-
 # lista apartamentów do edycji
 class AppartmentsEditList(View):
     def get(self, request):
@@ -93,7 +82,7 @@ class AddAppartment(PermissionRequiredMixin, View):
         form = AddAppartmentForm(request.POST)
         if form.is_valid():
             appartment = form.save()
-            return redirect(reverse('add-photo', args=[appartment.id]))
+            return redirect(reverse('apprtrent:add-photo', args=[appartment.id]))
         return render(request, "apprtrent/appartment_create_form.html", {"form": form})
 
 
@@ -105,7 +94,7 @@ class ChangeAppartment(PermissionRequiredMixin, UpdateView):
     fields = '__all__'
     template_name_suffix = '_update_form'
     pk_url_kwarg = 'appartment_pk'
-    success_url = reverse_lazy('edit-list-appartment')
+    success_url = reverse_lazy('apprtrent:edit-list-appartment')
 
 
 # usuwanie apartamentu
@@ -114,7 +103,7 @@ class DeleteAppartment(PermissionRequiredMixin, DeleteView):
 
     model = Appartment
     pk_url_kwarg = 'appartment_pk'
-    success_url = reverse_lazy('edit-list-appartment')
+    success_url = reverse_lazy('apprtrent:edit-list-appartment')
 
 
 # dodawanie właściciela
@@ -144,8 +133,11 @@ class AddAppartmentsPhoto(View):
         if form.is_valid():
             photo = form.save(commit=False)
             photo.appartment = appartment
-            photo.save()
-            return redirect(reverse('add-photo', kwargs={'appartment_id': photo.appartment_id}))
+            if request.user.has_perm('apprtrent.can_add_photo'):
+                photo.save()
+            else:
+                raise PermissionDenied("Access denied")
+            return redirect(reverse('apprtrent:add-photo', kwargs={'appartment_id': photo.appartment_id}))
         return render(request, "apprtrent/add_photos_form.html", {"form": form, "button": "Dodaj zdjęcie"})
 
 
