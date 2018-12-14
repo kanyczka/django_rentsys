@@ -10,7 +10,7 @@ Home page:<br>
 
 The purpose of the application is to enable guests to book an appartment in a given city.
 
-<img src="appartments_s.png">
+<img src="apartments_s.png">
 
 The apartments may belong to different people - the system registers each owner and all his/hers apartments.
 The guest may search for an apartment in a given city.
