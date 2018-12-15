@@ -18,11 +18,11 @@
 
                 {% for app in appartments %}
 
-                <li class="media" style="background-color: aliceblue"><a href="{{ app.photo_set.first.path.url }}">
+                <li class="media pr-3 mb-2" style="background-color: aliceblue"><a href="{{ app.photo_set.first.path.url }}">
                     <img class="mr-3 mb-0" style="width: 250px" src="{{ app.photo_set.first.path.url }}" alt="Generic placeholder image"></a>
 
-                    <div class="media-body">
-                        <a class="mt-0 app-description" href="{% url 'apprtrent:appartment' app.pk %}"><h4 class="media-heading">{{ app.app_name }}</h4></a>
+                    <div class="media-body mt-1">
+                        <a class="app-description" href="{% url 'apprtrent:appartment' app.pk %}"><h4 class="media-heading">{{ app.app_name }}</h4></a>
                         <h5 class="mt-0 app-description">{{ app.address_str }}, {{ app.address_city }}</h5>
                         <span class="app-description"> {{ app.description }}</span>
                         <p></p>
@@ -43,7 +43,6 @@
                         </small></span>
                     </div>
                 </li>
-                                                        <hr class="mt-0 mb-2">
 
                 {% endfor %}
 

@@ -6,23 +6,23 @@ It still needs couple of corrections :)
 
 Home page:<br>
 
-<img src="home_s.png">
+<img src="home_s.png" style="width: 700px">
 
 The purpose of the application is to enable guests to book an appartment in a given city.
 
-<img src="apartments_s.png">
+<img src="apartments_s.png" style="width: 700px">
 
 The apartments may belong to different people - the system registers each owner and all his/hers apartments.
 The guest may search for an apartment in a given city.
 System checks booking dates and shows the first available date that can be booked.
 It also shows all dates that have already been booked. 
 
-<img src="booking_s.png">
+<img src="booking_s.png" style="width: 700px">
 
 The superuser may add, delete, modify, edit apartments and owners as well as the content of the site 
 (About - O nas, Contact - Kontakt, For Owners - Dla Właścicieli)
 
-<img src="dbmanagement_s.png">
+<img src="dbmanagement_s.png" style="width: 700px">
 
 The photos to each apartment can also be added by editing each apartment. 
 
