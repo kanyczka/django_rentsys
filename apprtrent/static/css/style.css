@@ -2,22 +2,11 @@ body, html {
     height: 100%
 }
 
-.crop {
- height: 300px;
- width: 300px;
- overflow: hidden;
-}
-.crop img {
- height: auto;
- width: 300px;
-}
-
 .top-left {
   position: absolute;
   top: 55px;
   left: 1px;
 }
-
 
 .bg {
   background-image: url("../apprtrent/mainpic.jpg");
@@ -53,19 +42,20 @@ body, html {
 
 }
 
+.app-description {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 16px;
+}
+
 .info-title {
     margin-top: 15px
 }
 
 .appartment-info {
-    background: lightgrey;
+    background: aliceblue;
     text-decoration: none;
-}
-
-.app-description {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 0.9em;
 }
 
 .cena {

@@ -14,20 +14,19 @@
                 </div>
         </div>
         <nav class="navbar">
-
-            {% for app in appartments %}
-
             <ul class="list-unstyled">
-                <li class="media">
-                    <div class="media-left">
-                        <a href="{{ app.photo_set.first.path.url }}">
-                        <img class="mr-3" style="width: 300px" src="{{ app.photo_set.first.path.url }}" alt="Generic placeholder image"/></a>
-                    </div>
+
+                {% for app in appartments %}
+
+                <li class="media" style="background-color: aliceblue"><a href="{{ app.photo_set.first.path.url }}">
+                    <img class="mr-3 mb-0" style="width: 250px" src="{{ app.photo_set.first.path.url }}" alt="Generic placeholder image"></a>
+
                     <div class="media-body">
-                        <a class="mt-0" href="{% url 'apprtrent:appartment' app.pk %}"><h4 class="media-heading">{{ app.app_name }}</h4></a>
-                        <h5 class="mt-0">{{ app.address_str }}, {{ app.address_city }}</h5><br>
-                        <p class="mb-0">{{ app.description }}</p>
-                        <span><small><p></p>
+                        <a class="mt-0 app-description" href="{% url 'apprtrent:appartment' app.pk %}"><h4 class="media-heading">{{ app.app_name }}</h4></a>
+                        <h5 class="mt-0 app-description">{{ app.address_str }}, {{ app.address_city }}</h5>
+                        <span class="app-description"> {{ app.description }}</span>
+                        <p></p>
+                        <span style="color: dimgrey"><small>
                         <table class="table table-bordered">
                             <tbody>
                                 <tr class="text-center">
@@ -38,46 +37,21 @@
                                   <td>piętro: {{ app.floor }}</td>
                                   <td>pokoi: {{ app.no_of_rooms }}</td>
                                   <td>depozyt: {{ app.deposit }}</td>
-                              </tr>
+                                </tr>
                             </tbody>
                         </table>
                         </small></span>
                     </div>
                 </li>
+                                                        <hr class="mt-0 mb-2">
+
+                {% endfor %}
+
             </ul>
 
 
+            <hr>
 
-
-{#                <div class="media">#}
-{#                    <div class="media-left">#}
-{#                        <a href="{{ app.photo_set.first.path.url }}">#}
-{#                        <img class="align-self-center mr-3" width="300px" src="{{ app.photo_set.first.path.url }}" alt="Generic placeholder image"/></a>#}
-{#                    </div>#}
-{#                    <div class="media-body">#}
-{#                        <a class="mt-0" href="{% url 'apprtrent:appartment' app.pk %}"><h4 class="media-heading">{{ app.app_name }}</h4></a>#}
-{#                        <h5 class="mt-0">{{ app.address_str }}, {{ app.address_city }}</h5><br>#}
-{#                        <p class="mb-0">{{ app.description }}</p>#}
-{#                        <span><small><p></p>#}
-{#                        <table class="table table-bordered">#}
-{#                            <tbody>#}
-{#                                <tr class="text-center">#}
-{#                                  <td>lokalizacja: {{ app.get_distance_display }}</td>#}
-{#                                  <td>max osób: {{ app.no_of_guests }}</td>#}
-{#                                  <td>łóżek: {{ app.no_of_beds }}</td>#}
-{#                                  <td>pow.: {{ app.area }}mkw</td>#}
-{#                                  <td>piętro: {{ app.floor }}</td>#}
-{#                                  <td>pokoi: {{ app.no_of_rooms }}</td>#}
-{#                                  <td>depozyt: {{ app.deposit }}</td>#}
-{#                              </tr>#}
-{#                            </tbody>#}
-{#                        </table>#}
-{#                        </small></span>#}
-{#                    </div>#}
-{#                </div>#}
-                <hr>
-
-            {% endfor %}
 
         </nav>
 
