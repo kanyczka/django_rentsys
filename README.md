@@ -1,6 +1,5 @@
-# Rentystem 
+# RentSystem 
 is a short term www rental system for apartments.
-
 It is my first Python/Django project after I finished python bootcamp.
 It still needs couple of corrections :)
 
@@ -28,8 +27,7 @@ The photos to each apartment can also be added by editing each apartment.
 
 I will be grateful for any constructive comment :)
 
-Katarzyna Nyczka
-
+KN
 November, 2018
 
 
